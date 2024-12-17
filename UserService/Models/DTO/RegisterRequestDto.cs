@@ -2,7 +2,7 @@
 
 namespace UserService.Models.DTO;
 
-public class RegisterDto
+public class RegisterRequestDto
 {
     [Required]
     public string FirstName { get; set; }

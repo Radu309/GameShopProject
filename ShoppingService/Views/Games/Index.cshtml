@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ShoppingService.Models.Game>
+
+@{
+    ViewBag.Title = "Games List";
+}
+<section id="GameIndex">
+    <div class="games-body">
+        <div class="games-container">
+            <h1>Games List</h1>
+            @* @if (ViewBag.IsAdmin) *@
+            @* { *@
+                <h1>
+                    <form asp-controller="Games" asp-action="Create" method="get">
+                        <button class="create-btn">Create New Game</button>
+                    </form>
+                </h1>
+            @* } *@
+            <!-- Titluri pentru atributele fiecărui joc -->
+            <div class="game-attributes-header">
+                <div class="game-attribute-header">
+                    <h3>Game</h3>
+                </div>
+                <div class="game-attribute-header">
+                    <h3>Price</h3>
+                </div>
+                <div class="game-attribute-header">
+                    <h3>Stock</h3>
+                </div>
+                <div class="game-attribute-header">
+                    <h3>Action</h3>
+                </div>
+            </div>
+            <ul class="list">
+                @foreach (var game in Model)
+                {
+                    <li class="list-item">
+                        <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id">
+                            <div class="game-info">
+                                <!-- Titluri deasupra atributelor -->
+                                <div class="game-attribute">
+                                    <h3>@game.Name</h3>
+                                    @if (game.Images != null && game.Images.Any())
+                                    {
+                                        var firstImage = game.Images.FirstOrDefault();
+                                        <img src="data:image/png;base64,@firstImage.Base64Data" 
+                                             alt="@game.Name thumbnail" class="game-image"/>
+                                    }
+                                    else
+                                    {
+                                        <p>No image available</p>
+                                    }
+                                </div>
+
+                                <div class="game-attribute">
+                                    <p>@game.Price.ToString("C2")</p> <!-- Format price as currency -->
+                                </div>
+
+                                <div class="game-attribute">
+                                    <p>@game.Stock</p>
+                                </div>
+
+                                <div class="game-attribute">
+                                    @* @if (ViewBag.IsAdmin) *@
+                                    @* { *@
+                                        <form asp-controller="Games" asp-action="Edit" method="get">
+                                            <input type="hidden" name="id" value="@game.Id"/>
+                                            <button type="submit" class="btn btn-primary">Edit</button>
+                                        </form>
+                                        <button>Buy</button>
+                                        <form asp-controller="Games" asp-action="Delete" method="post">
+                                            <input type="hidden" name="id" value="@game.Id"/>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    @* } *@
+                                    @* else *@
+                                    @* { *@
+                                        @* <button>Buy</button> *@
+                                    @* } *@
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Games/Index.css" asp-append-version="true"/>

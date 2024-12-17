@@ -1,0 +1,68 @@
+﻿@model ShoppingService.Models.Review
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section id="ReviewDetails">
+    <div class="review-details-body">
+        <div class="review-details-container">
+            <h1>Review Details</h1>
+
+            <dl class="review-details-list">
+                <div class="review-details-item">
+                    <dt class="form-label">
+                        @Html.DisplayNameFor(model => model.Rating)
+                    </dt>
+                    <dd class="form-input">
+                        @Html.DisplayFor(model => model.Rating)
+                    </dd>
+                </div>
+
+                <div class="review-details-item">
+                    <dt class="form-label">
+                        @Html.DisplayNameFor(model => model.Comment)
+                    </dt>
+                    <dd class="form-input">
+                        @Html.DisplayFor(model => model.Comment)
+                    </dd>
+                </div>
+
+                <div class="review-details-item">
+                    <dt class="form-label">
+                        @Html.DisplayNameFor(model => model.ReviewDate)
+                    </dt>
+                    <dd class="form-input">
+                        @Html.DisplayFor(model => model.ReviewDate)
+                    </dd>
+                </div>
+
+                <div class="review-details-item">
+                    <dt class="form-label">
+                        @Html.DisplayNameFor(model => model.Game)
+                    </dt>
+                    <dd class="form-input">
+                        @Html.DisplayFor(model => model.Game.Description)
+                    </dd>
+                </div>
+
+                <div class="review-details-item">
+                    <dt class="form-label">
+                        @Html.DisplayNameFor(model => model.User)
+                    </dt>
+                    <dd class="form-input">
+                        @Html.DisplayFor(model => model.User.Id)
+                    </dd>
+                </div>
+            </dl>
+
+            <div class="action-links">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/reviews/ReviewDetails.css" asp-append-version="true" />

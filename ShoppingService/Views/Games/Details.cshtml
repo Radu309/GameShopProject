@@ -1,0 +1,100 @@
+﻿@model ShoppingService.Models.Game
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="GameDetails">
+    <div class="game-details-container">
+        <div class="game-details-box">
+            <h1>Game Details</h1>
+            <div class="image-gallery">
+                @if (Model.Images != null && Model.Images.Count > 0)
+                {
+                    @foreach (var image in Model.Images)
+                    {
+                        <div class="image-item">
+                            <img src="data:image/png;base64,@image.Base64Data"
+                                alt="@image.FileName thumbnail" class="game-image"/>
+                            @* <form asp-action="DeleteImage" asp-controller="Games" method="post"> *@
+                            @*     <input type="hidden" name="imageId" value="@image.Id" /> *@
+                            @*     <input type="hidden" name="gameId" value="@Model.Id" /> *@
+                            @*     <button type="submit" class="btn btn-danger btn-sm">Delete</button> *@
+                            @* </form> *@
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No images available.</p>
+                }
+            </div>
+            <!-- Detaliile jocului -->
+            <div class="game-details-info">
+                <dl class="general-info">
+                    <dt class="col-sm-2 game-label">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-10 game-detail">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+
+                    <dt class="col-sm-2 game-label">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10 game-detail">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+                    <dt class="col-sm-2 game-label">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+                    <dd class="col-sm-10 game-detail">
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+
+                    <dt class="col-sm-2 game-label">
+                        @Html.DisplayNameFor(model => model.Stock)
+                    </dt>
+                    <dd class="col-sm-10 game-detail">
+                        @Html.DisplayFor(model => model.Stock)
+                    </dd>
+                </dl>
+                <div class="review-info">
+                    <div id="reviews-section">
+                        <div class="reviews-container">
+                            <h2>User Reviews</h2>
+                            <div class="reviews-scroll">
+                                @foreach (var review in Model.Reviews ?? new List<Review>())
+                                {
+                                    <div class="review-card">
+                                        <div class="review-header">
+                                            @*  de modificat  *@
+                                            <h3>@review.User</h3>
+                                            <p class="review-rate">Rating: @review.Rating/5</p>
+                                        </div>
+                                        <div class="review-comment">
+                                            <p>@review.Comment</p>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Butoane de navigare -->
+            <div class="game-action-buttons">
+                <a asp-action="Index" class="game-btn game-btn-back">Back to List</a>
+                <a asp-controller="Reviews" asp-action="Create" class="game-btn game-btn-back">Create Review</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/games/Details.css" asp-append-version="true"/>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,66 @@
+﻿@model ShoppingService.Models.Game
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="GameCreate">
+    <div class="game-form-container">
+        <div class="game-form-box">
+            <form asp-action="Create" enctype="multipart/form-data">
+                <h1>Create Game</h1>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Name Input -->
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control game-input"/>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <!-- Description Input -->
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control game-input"/>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Price Input -->
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control game-input"/>
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <!-- Stock Input -->
+                <div class="form-group">
+                    <label asp-for="Stock" class="control-label"></label>
+                    <input asp-for="Stock" class="form-control game-input"/>
+                    <span asp-validation-for="Stock" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label for="imageFiles">Upload Image:</label>
+                    <input type="file" name="imageFiles" id="imageFiles" accept="image/jpeg" multiple />
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn game-btn game-btn-submit"/>
+                </div>
+            </form>
+
+            <!-- Back to List Link -->
+            <div>
+                <a asp-action="Index" class="game-btn game-btn-back">Back to List</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/games/Create.css" asp-append-version="true"/>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
