@@ -1,8 +1,8 @@
-﻿@model IEnumerable<ShoppingService.Models.Review>
+@model IEnumerable<ShoppingService.Models.Review>
 
 @{
-ViewData["Title"] = "Index";
-Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section id="Reviews">
     <div class="reviews-body">
@@ -14,7 +14,6 @@ Layout = "~/Views/Shared/_Layout.cshtml";
             @*     </form> *@
             @* </h1> *@
 
-            <!-- Titluri pentru atributele fiecărei recenzii -->
             <div class="review-attributes-header">
                 <div class="review-attribute-header">
                     <h3>Rating</h3>
@@ -39,46 +38,45 @@ Layout = "~/Views/Shared/_Layout.cshtml";
             <ul class="list">
                 @foreach (var review in Model)
                 {
-                <li class="list-item">
-                    <div class="review-info">
-                        <div class="review-attribute">
-                            <p>@review.Rating</p>
-                        </div>
+                    <li class="list-item">
+                        <div class="review-info">
+                            <div class="review-attribute">
+                                <p>@review.Rating</p>
+                            </div>
 
-                        <div class="review-attribute">
-                            <p>@review.Comment</p>
-                        </div>
+                            <div class="review-attribute">
+                                <p>@review.Comment</p>
+                            </div>
 
-                        <div class="review-attribute">
-                            <p>@review.ReviewDate.ToString("MM/dd/yyyy")</p>
-                        </div>
+                            <div class="review-attribute">
+                                <p>@review.ReviewDate.ToString("MM/dd/yyyy")</p>
+                            </div>
 
-                        <div class="review-attribute">
-                            <p>@review.Game.Description</p>
-                        </div>
+                            <div class="review-attribute">
+                                <p>@review.Game.Description</p>
+                            </div>
 
-                        <div class="review-attribute">
-                            @* de afisat numele aici *@
-                            <p>@review.User.Id</p>
-                        </div>
+                            <div class="review-attribute">
+                                <p>@review.User.FirstName @review.User.LastName</p>
+                            </div>
 
-                        <div class="review-attribute">
-                            <form asp-action="Details" method="get">
-                                <input type="hidden" name="id" value="@review.Id" />
-                                <button type="submit" class="btn btn-info">Details</button>
-                            </form>
+                            <div class="review-attribute">
+                                <form asp-action="Details" method="get">
+                                    <input type="hidden" name="id" value="@review.Id" />
+                                    <button type="submit" class="btn btn-info">Details</button>
+                                </form>
 
-                            <form asp-action="Delete" method="post">
-                                <input type="hidden" name="id" value="@review.Id" />
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                                <form asp-action="Delete" method="post">
+                                    <input type="hidden" name="id" value="@review.Id" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
                 }
             </ul>
         </div>
     </div>
 </section>
 
-<link rel="stylesheet" href="~/css/reviews/ReviewIndex.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Reviews/Index.css" asp-append-version="true" />

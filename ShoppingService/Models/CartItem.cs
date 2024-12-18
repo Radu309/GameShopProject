@@ -1,4 +1,6 @@
-﻿namespace ShoppingService.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace ShoppingService.Models;
 
 public class CartItem
 {
@@ -7,7 +9,11 @@ public class CartItem
     public decimal TotalPrice { get; set; }
 
     public int CartId { get; set; }
-    public Cart Cart { get; set; }
-    public int GameId { get; set; }
-    public Game Game { get; set; }
+    [JsonIgnore]
+    public Cart? Cart { get; set; }
+    public int OrderId { get; set; }
+    [JsonIgnore]
+    public Order? Order { get; set; }
+    public ICollection<Game> Games { get; set; } = new List<Game>();
+
 }

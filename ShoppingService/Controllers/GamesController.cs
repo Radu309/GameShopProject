@@ -35,7 +35,6 @@ public class GamesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Game game, IFormFile[] imageFiles)
     {
-        Console.WriteLine("\t\tHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 1");
         if (!ModelState.IsValid)
         {
             foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -44,20 +43,13 @@ public class GamesController : Controller
             }
             return View(game);
         }
-        Console.WriteLine("\t\tHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 2");
-
         await _gamesService.AddGameAsync(game);
-        Console.WriteLine("\t\tHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 3");
 
         if (!await _gamesService.UploadImagesAsync(game.Id, imageFiles))
         {
-            Console.WriteLine("\t\tHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE4");
-
             ModelState.AddModelError("", "Failed to upload images.");
             return View(game);
         }
-        Console.WriteLine("\t\tHEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 5");
-
         return RedirectToAction(nameof(Index));
     }
 

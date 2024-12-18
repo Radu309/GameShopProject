@@ -17,11 +17,6 @@
                         <div class="image-item">
                             <img src="data:image/png;base64,@image.Base64Data"
                                 alt="@image.FileName thumbnail" class="game-image"/>
-                            @* <form asp-action="DeleteImage" asp-controller="Games" method="post"> *@
-                            @*     <input type="hidden" name="imageId" value="@image.Id" /> *@
-                            @*     <input type="hidden" name="gameId" value="@Model.Id" /> *@
-                            @*     <button type="submit" class="btn btn-danger btn-sm">Delete</button> *@
-                            @* </form> *@
                         </div>
                     }
                 }
@@ -71,7 +66,7 @@
                                     <div class="review-card">
                                         <div class="review-header">
                                             @*  de modificat  *@
-                                            <h3>@review.User</h3>
+                                            <h3>@review.User.FirstName</h3>
                                             <p class="review-rate">Rating: @review.Rating/5</p>
                                         </div>
                                         <div class="review-comment">

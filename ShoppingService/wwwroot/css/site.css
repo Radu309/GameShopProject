@@ -1,0 +1,38 @@
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-size: 14px;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: url("/images/login-background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+main{
+  width: 100%;
+  height: 100%;
+}
+/*  pentru a ascunde linia de sub scris  */
+a {
+  text-decoration: none; /
+}
+
+a:hover {
+  text-decoration: none;
+}

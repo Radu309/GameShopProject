@@ -1,0 +1,72 @@
+@model IEnumerable<ShoppingService.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Cart Items";
+}
+
+<section id="CartItemIndex">
+    <div class="cart-item-body">
+        <div class="cart-item-container">
+            <h1>Cart Items</h1>
+            <div class="create-item">
+                <form asp-controller="CartItems" asp-action="Create" method="get">
+                    <button class="create-btn">Create New</button>
+                </form>
+            </div>
+
+            <!-- Header pentru atributele fiecărui articol din coș -->
+            <div class="cart-item-attributes-header">
+                <div class="cart-item-attribute-header">
+                    <h3>Quantity</h3>
+                </div>
+                <div class="cart-item-attribute-header">
+                    <h3>Total Price</h3>
+                </div>
+                <div class="cart-item-attribute-header">
+                    <h3>Cart ID</h3>
+                </div>
+                <div class="cart-item-attribute-header">
+                    <h3>Order ID</h3>
+                </div>
+                <div class="cart-item-attribute-header">
+                    <h3>Actions</h3>
+                </div>
+            </div>
+
+            <ul class="list">
+                @foreach (var item in Model)
+                {
+                    <li class="list-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-attribute">
+                                <p>@item.Quantity</p>
+                            </div>
+                            <div class="cart-item-attribute">
+                                <p>@item.TotalPrice.ToString("C2")</p>
+                            </div>
+                            <div class="cart-item-attribute">
+                                <p>@item.Cart.Id</p>
+                            </div>
+                            <div class="cart-item-attribute">
+                                <p>@item.Order.Id</p>
+                            </div>
+                            <div class="cart-item-attribute actions">
+                                <form asp-action="Edit" asp-route-id="@item.Id" method="get">
+                                    <button class="btn btn-primary">Edit</button>
+                                </form>
+                                <form asp-action="Details" asp-route-id="@item.Id" method="get">
+                                    <button class="btn btn-secondary">Details</button>
+                                </form>
+                                <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/CartItems/Index.css" asp-append-version="true" />

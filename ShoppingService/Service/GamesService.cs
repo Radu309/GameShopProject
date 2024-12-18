@@ -29,6 +29,13 @@ public class GamesService
     {
         if (files == null || files.Length == 0) return false;
 
+        var images = await _context.Images.Where(i => i.GameId == gameId).ToListAsync();
+        if (images != null && images.Any())
+        {
+            _context.Images.RemoveRange(images); 
+            await _context.SaveChangesAsync(); 
+        }
+        
         foreach (var file in files)
         {
             if (file.Length > 0)
