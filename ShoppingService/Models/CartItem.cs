@@ -11,9 +11,7 @@ public class CartItem
     public int CartId { get; set; }
     [JsonIgnore]
     public Cart? Cart { get; set; }
-    public int OrderId { get; set; }
-    [JsonIgnore]
-    public Order? Order { get; set; }
+
     public ICollection<Game> Games { get; set; } = new List<Game>();
 
 }

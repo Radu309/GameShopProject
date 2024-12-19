@@ -1,0 +1,64 @@
+@model IEnumerable<ShoppingService.Models.Cart>
+
+@{
+    ViewData["Title"] = "Cart List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="CartIndex">
+    <div class="cart-body">
+        <div class="cart-container">
+            <h1>Cart List</h1>
+            <h1>
+                <form asp-controller="Carts" asp-action="Create" method="get">
+                    <button class="create-btn">Create New</button>
+                </form>
+            </h1>
+            <!-- Titluri pentru atributele fiecărui coș -->
+            <div class="cart-attributes-header">
+                <div class="cart-attribute-header">
+                    <h3>Total Amount</h3>
+                </div>
+                <div class="cart-attribute-header">
+                    <h3>User</h3>
+                </div>
+                <div class="cart-attribute-header">
+                    <h3>Action</h3>
+                </div>
+            </div>
+            <ul class="list">
+                @foreach (var cart in Model)
+                {
+                    <li class="list-item">
+                        <div class="cart-info">
+                            <div class="cart-attribute">
+                                <p>@cart.TotalAmount.ToString("C2")</p>
+                            </div>
+
+                            <div class="cart-attribute">
+                                <p>@cart.User.Id</p>
+                            </div>
+
+                            <div class="cart-attribute">
+                                <form asp-action="Edit" method="get">
+                                    <input type="hidden" name="id" value="@cart.Id" />
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form asp-action="Details" method="get">
+                                    <input type="hidden" name="id" value="@cart.Id" />
+                                    <button type="submit" class="btn btn-secondary">Details</button>
+                                </form>
+                                <form asp-action="Delete" method="post">
+                                    <input type="hidden" name="id" value="@cart.Id" />
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Carts/Index.css" asp-append-version="true" />

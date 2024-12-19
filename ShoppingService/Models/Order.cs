@@ -11,5 +11,5 @@ public class Order
     public int UserId { get; set; }
     [JsonIgnore]
     public User? User { get; set; }
-    public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+    public ICollection<Cart> Carts { get; set; } = new List<Cart>();
 }

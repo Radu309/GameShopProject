@@ -27,23 +27,24 @@ public class ShoppingDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         // User - Cart (1-1)
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Cart)
+            .WithOne(c => c.User)
+            .HasForeignKey<Cart>(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade); 
+        
+        // Order - Cart (1-N)
         modelBuilder.Entity<Cart>()
-            .HasOne(c => c.User)
-            .WithOne(cl => cl.Cart)
-            .HasForeignKey<Cart>(c => c.UserId);
+            .HasOne(c => c.Order)
+            .WithMany(o => o.Carts)
+            .HasForeignKey(ci => ci.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Cart - CartItem (1-N)
         modelBuilder.Entity<CartItem>()
             .HasOne(ci => ci.Cart)
             .WithMany(c => c.CartItems)
             .HasForeignKey(ci => ci.CartId)
-            .OnDelete(DeleteBehavior.Cascade);
-       
-        // Order - CartItem (1-N)
-        modelBuilder.Entity<CartItem>()
-            .HasOne(ci => ci.Order)
-            .WithMany(o => o.CartItems)
-            .HasForeignKey(ci => ci.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
       
         // CartItem - Game (N-N)

@@ -45,6 +45,9 @@ namespace ShoppingService.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("integer");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
 
@@ -52,6 +55,8 @@ namespace ShoppingService.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -70,9 +75,6 @@ namespace ShoppingService.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -82,8 +84,6 @@ namespace ShoppingService.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("CartItems");
                 });
@@ -251,11 +251,18 @@ namespace ShoppingService.Migrations
 
             modelBuilder.Entity("ShoppingService.Models.Cart", b =>
                 {
+                    b.HasOne("ShoppingService.Models.Order", "Order")
+                        .WithMany("Carts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ShoppingService.Models.User", "User")
                         .WithOne("Cart")
                         .HasForeignKey("ShoppingService.Models.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
@@ -268,15 +275,7 @@ namespace ShoppingService.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoppingService.Models.Order", "Order")
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Cart");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ShoppingService.Models.Image", b =>
@@ -334,7 +333,7 @@ namespace ShoppingService.Migrations
 
             modelBuilder.Entity("ShoppingService.Models.Order", b =>
                 {
-                    b.Navigation("CartItems");
+                    b.Navigation("Carts");
                 });
 
             modelBuilder.Entity("ShoppingService.Models.User", b =>

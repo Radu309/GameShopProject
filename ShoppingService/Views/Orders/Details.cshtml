@@ -1,0 +1,56 @@
+@model ShoppingService.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<section id="OrderDetails">
+    <div class="order-details-body">
+        <div class="order-details-container">
+            <h1>Order Details</h1>
+
+            <div class="order-info">
+                <h4>Order</h4>
+                <hr />
+                <dl class="details-list">
+                    <div class="details-item">
+                        <dt class="details-label">
+                            @Html.DisplayNameFor(model => model.Date)
+                        </dt>
+                        <dd class="details-value">
+                            @Html.DisplayFor(model => model.Date)
+                        </dd>
+                    </div>
+
+                    <div class="details-item">
+                        <dt class="details-label">
+                            @Html.DisplayNameFor(model => model.TotalAmount)
+                        </dt>
+                        <dd class="details-value">
+                            @Html.DisplayFor(model => model.TotalAmount)
+                        </dd>
+                    </div>
+
+                    <div class="details-item">
+                        <dt class="details-label">
+                            @Html.DisplayNameFor(model => model.User)
+                        </dt>
+                        <dd class="details-value">
+                            @Html.DisplayFor(model => model.User.Id)
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="actions">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Orders/Details.css" asp-append-version="true" />
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
