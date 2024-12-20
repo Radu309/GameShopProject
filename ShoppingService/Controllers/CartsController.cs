@@ -140,17 +140,23 @@ namespace ShoppingService.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteItem(int cartItemId)
         {
-            var cartItem = await _context.CartItems
-                .Include(ci => ci.Cart)
-                .FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+            var cart = await _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.Games)
+                .FirstOrDefaultAsync(c => c.CartItems.Any(ci => ci.Id == cartItemId));
 
-            if (cartItem == null || cartItem.Cart == null)
+            if (cart == null)
+                return NotFound();
+            var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+            if (cartItem == null )
                 return NotFound();
 
             _context.CartItems.Remove(cartItem);
-            cartItem.Cart.TotalAmount = cartItem.Cart.CartItems.Sum(ci => ci.TotalPrice);
+            cartItem.TotalPrice = 0;
+            cart.TotalAmount = cart.CartItems.Sum(ci => ci.TotalPrice);
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ViewCart), new { userId = cartItem.Cart.UserId });
+            return RedirectToAction(nameof(ViewCart), new { userId = cart.UserId });
         }
 
         
