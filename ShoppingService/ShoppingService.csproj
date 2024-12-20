@@ -31,6 +31,10 @@
       <_ContentIncludedByDefault Remove="Views\Reviews\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
       <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Create.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Details.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Edit.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Index.css" />
     </ItemGroup>
 
     <ItemGroup>

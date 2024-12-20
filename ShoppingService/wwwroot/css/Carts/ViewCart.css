@@ -1,0 +1,109 @@
+﻿#ViewCart {
+    .cart-body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cart-container {
+        position: relative;
+        flex-direction: column;
+        max-width: 80%;
+        max-height: 70%;
+        background-color: #f9f9f9;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+        font-size: 3rem;
+    }
+    .cart-box {
+        min-width: 600px; 
+        width: 100%; 
+        max-width: 100%; 
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .cart-table th, .cart-table td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .delete-button {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+
+    .increment-button, .decrement-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .increment-button:hover, .decrement-button:hover {
+        background-color: #0056b3;
+    }
+    
+    .quantity-control span {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    
+    .cart-summary {
+        margin-top: 20px;
+        text-align: right;
+    }
+    
+    .send-order-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 7px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    .send-order-button:hover {
+        background-color: #0056b3;
+    }
+}

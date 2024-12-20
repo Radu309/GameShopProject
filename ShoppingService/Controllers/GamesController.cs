@@ -18,6 +18,9 @@ public class GamesController : Controller
     public IActionResult Index()
     {
         var games = _gamesService.GetAllGames();
+        // TO DO: to add the logic for userId
+        ViewBag.CurrentUserId = 1;
+
         // ViewBag.IsAdmin = User.IsInRole("Admin");
         return View(games);
     }

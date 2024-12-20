@@ -1,0 +1,78 @@
+﻿@model ShoppingService.Models.Cart
+
+@{
+    ViewBag.Title = "Your Cart";
+}
+
+<section id="ViewCart">
+    <div class="cart-body">
+        <div class="cart-container">
+            @if (Model == null || !Model.CartItems.Any())
+            {
+                <p>Your cart is empty.</p>
+            }
+            else
+            {
+                <div class="cart-box">
+                    <h1>Your Cart</h1>
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            foreach (var game in item.Games)
+                            {
+                                <tr>
+                                    <td>@game.Name</td>
+                                    <td>
+                                        <div class="quantity-control">
+                                            <form asp-action="UpdateQuantity" asp-controller="Carts" method="post" style="display: inline;">
+                                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                                <input type="hidden" name="operation" value="decrement" />
+                                                <button type="submit" class="decrement-button">-</button>
+                                            </form>
+                                            <span>@item.Quantity</span>
+                                            <form asp-action="UpdateQuantity" asp-controller="Carts" method="post" style="display: inline;">
+                                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                                <input type="hidden" name="operation" value="increment" />
+                                                <button type="submit" class="increment-button">+</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td>@game.Price.ToString("C2")</td>
+                                    <td>@item.TotalPrice.ToString("C2")</td>
+                                    <td>
+                                        <form asp-action="DeleteItem" asp-controller="Carts" method="post" style="display: inline;">
+                                            <input type="hidden" name="cartItemId" value="@item.Id" />
+                                            <button type="submit" class="delete-button">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>                        
+                            <h3>Total: @Model.TotalAmount.ToString("C2")</h3>
+                        </td>
+                        <td>
+                            <button class="send-order-button">Send the Order</button>
+                        </td>
+                
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<link rel="stylesheet" href="~/css/Carts/ViewCart.css" asp-append-version="true" />
