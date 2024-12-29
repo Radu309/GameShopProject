@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ShoppingService.Models;
 using ShoppingService.Service;
 
@@ -40,10 +41,15 @@ public class GamesController : Controller
     {
         if (!ModelState.IsValid)
         {
-            foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            {
-                Console.WriteLine(error.ErrorMessage);
-            }
+            // foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+            // {
+            //     Console.WriteLine(error.ErrorMessage);
+            // }
+            return View(game);
+        }
+        if (imageFiles.IsNullOrEmpty())
+        {
+            ModelState.AddModelError("", "Please upload at least one image.");
             return View(game);
         }
         await _gamesService.AddGameAsync(game);
@@ -67,6 +73,8 @@ public class GamesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Game updatedGame, IFormFile[] imageFiles)
     {
+        if (!ModelState.IsValid)
+            return View(updatedGame);
         var existingGame = await _gamesService.GetGameByIdAsync(id);
         if (existingGame == null) return NotFound();
 
