@@ -49,29 +49,31 @@ public class AuthController : ControllerBase
         {
             UserId = user.Id,
             RefreshToken = refreshToken,
-            ExpiryDate = DateTime.UtcNow.AddMinutes(5)
+            ExpiryDate = DateTime.UtcNow.AddMinutes(5),
+            RedirectUrl = "http://localhost:5025/" 
         };
 
         return Ok(response);
     }
     [Authorize(Roles = "Admin, Client")]
     [HttpPost("refresh-token")]
-    public async Task<IActionResult> RefreshToken([FromBody] TokenRequestDto refreshTokenDto)
+    public async Task<IActionResult> RefreshToken()
     {
-        var user = await _authService.GetUserFromToken(refreshTokenDto.RefreshToken);
-        if (user == null)
-        {
-            return Unauthorized("User not found.");
-        }
-        if (user.Id == null || !await _authService.ValidateRefreshTokenAsync(refreshTokenDto.RefreshToken))
-        {
-            return Unauthorized("Invalid refresh token.");
-        }
+        var authHeader = Request.Headers["Authorization"].ToString();   
+        if(!authHeader.StartsWith("Bearer "))
+            return BadRequest();
+        if (string.IsNullOrEmpty(authHeader))
+            return Unauthorized("Bearer token is missing");
+        var bearerToken = authHeader.Substring("Bearer ".Length).Trim();
+        
+        var user = await _authService.GetUserFromToken(bearerToken);
+        if (!await _authService.ValidateRefreshTokenAsync(bearerToken))
+            return Unauthorized("Bearer token is invalid.");
+
         //nu mai e nevoie de invalidarea tokenului. Acesta se suprascrie
         var newRefreshToken = await _authService.GenerateJwtToken(user);
         await _authService.SaveRefreshTokenAsync(user.Id, newRefreshToken);
 
-        // var response = new TokenModel()
         var response = new TokenResponseDto()
         {
             UserId = user.Id,

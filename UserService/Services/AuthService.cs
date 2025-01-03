@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Packaging;
 using UserService.Data;
 using UserService.Models;
 using UserService.Models.DTO;
@@ -91,9 +90,8 @@ public class AuthService
     {
         var user = await GetUserFromToken(refreshToken);
         if (user == null)
-        {
             return false;
-        }
+
         var storedToken = await _userManager.GetAuthenticationTokenAsync(user, "CustomProvider", "RefreshToken");
         return storedToken == refreshToken;
     }

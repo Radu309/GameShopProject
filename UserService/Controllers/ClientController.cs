@@ -13,9 +13,9 @@ public class ClientController : ControllerBase
 {
     private readonly ClientService _clientService;
 
-    public ClientController(ClientService usersService)
+    public ClientController(ClientService clientService)
     {
-        _clientService = usersService;
+        _clientService = clientService;
     }
 
     private async Task<(string? UserId, IActionResult? ErrorResult)> GetUserIdFromTokenAsync()
