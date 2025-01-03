@@ -65,7 +65,10 @@
                             <h3>Total: @Model.TotalAmount.ToString("C2")</h3>
                         </td>
                         <td>
-                            <button class="send-order-button">Send the Order</button>
+                            <form asp-action="Create" asp-controller="Orders" method="post" style="display: inline;">
+                                <input type="hidden" name="cartId" value="@Model.Id" />
+                                <button class="send-order-button">Send the Order</button>
+                            </form>
                         </td>
                 
                         </tbody>

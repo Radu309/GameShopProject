@@ -1,0 +1,13 @@
+﻿@model ErrorViewModel
+
+<section id="ErrorMessage">
+    <div class="error-body">
+        <div class="error-container">
+            <h1>Error</h1>
+            <p>@Model.ErrorMessage</p>
+            <a href="@Url.Action("Index", "Games")" class="back-button">Back to Games</a>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/ErrorMessage.css" asp-append-version="true" />

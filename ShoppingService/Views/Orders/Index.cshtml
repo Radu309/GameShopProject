@@ -7,11 +7,11 @@
     <div class="orders-body">
         <div class="orders-container">
             <h1>Orders List</h1>
-            <h1>
-                <form asp-controller="Orders" asp-action="Create" method="get">
-                    <button class="create-btn">Create New Game</button>
-                </form>
-            </h1>
+            @* <h1> *@
+            @*     <form asp-controller="Orders" asp-action="Create" method="get"> *@
+            @*         <button class="create-btn">Create New Order</button> *@
+            @*     </form> *@
+            @* </h1> *@
             <div class="order-attributes-header">
                 <div class="order-attribute-header">
                     <h3>Date</h3>
@@ -44,10 +44,6 @@
                             </div>
 
                             <div class="order-attribute">
-                                <form asp-controller="Orders" asp-action="Edit" method="get">
-                                    <input type="hidden" name="id" value="@order.Id" />
-                                    <button type="submit" class="btn btn-primary">Edit</button>
-                                </form>
                                 <form asp-controller="Orders" asp-action="Details" method="get">
                                     <input type="hidden" name="id" value="@order.Id" />
                                     <button type="submit" class="btn btn-secondary">Details</button>

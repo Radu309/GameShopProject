@@ -13,6 +13,17 @@
                 <h4>Order</h4>
                 <hr />
                 <dl class="details-list">
+
+
+                    <div class="details-item">
+                        <dt class="details-label">
+                            @Html.DisplayNameFor(model => model.User)
+                        </dt>
+                        <dd class="details-value">
+                            @Html.DisplayFor(model => model.User.Id)
+                        </dd>
+                    </div>
+
                     <div class="details-item">
                         <dt class="details-label">
                             @Html.DisplayNameFor(model => model.Date)
@@ -24,26 +35,47 @@
 
                     <div class="details-item">
                         <dt class="details-label">
+                            CartItems
+                        </dt>
+                        <dd class="details-value">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Games</th>
+                                    <th>Quantity</th>
+                                    <th>Total-Price</th>
+                                </tr>
+                                <tbody>
+                                @foreach (var cartItem in Model.CartItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            @foreach (var game in cartItem.Games)
+                                            {
+                                                <div>@game.Name</div>
+                                            }
+                                        </td>
+                                        <td>@cartItem.Quantity</td>
+                                        <td>@cartItem.TotalPrice</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </dd>
+                    </div>
+                    
+                    <div class="details-item">
+                        <dt class="details-label">
                             @Html.DisplayNameFor(model => model.TotalAmount)
                         </dt>
                         <dd class="details-value">
                             @Html.DisplayFor(model => model.TotalAmount)
                         </dd>
                     </div>
-
-                    <div class="details-item">
-                        <dt class="details-label">
-                            @Html.DisplayNameFor(model => model.User)
-                        </dt>
-                        <dd class="details-value">
-                            @Html.DisplayFor(model => model.User.Id)
-                        </dd>
-                    </div>
+                    
                 </dl>
             </div>
 
             <div class="actions">
-                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </div>
