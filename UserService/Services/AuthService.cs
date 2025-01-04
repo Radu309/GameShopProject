@@ -53,6 +53,8 @@ public class AuthService
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.GivenName, user.FirstName),
+            new Claim(ClaimTypes.Surname, user.LastName),
             new Claim(ClaimTypes.Role, _userManager.GetRolesAsync(user).Result.First()),
         };
 
@@ -63,21 +65,15 @@ public class AuthService
             issuer: _configuration["JwtSettings:Issuer"],
             audience: _configuration["JwtSettings:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(5),
+            expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JwtSettings:ExpirationMinutes"])),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public async Task SaveRefreshTokenAsync(string userId, string refreshToken)
+    public async Task SaveRefreshTokenAsync(User user, string refreshToken)
     {
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            throw new ArgumentException("Invalid userId");
-        }
-
         await _userManager.SetAuthenticationTokenAsync(
             user,
             "CustomProvider",
@@ -102,7 +98,10 @@ public class AuthService
             .FirstOrDefaultAsync(t => t.Value == token);
         if (tokenUser == null)
             return null;
-        return await _userManager.FindByIdAsync(tokenUser.UserId);
+        var user = await _userManager.FindByIdAsync(tokenUser.UserId);
+        if (user == null)
+            return null;
+        return user;
     }
     
 }

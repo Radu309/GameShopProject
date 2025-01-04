@@ -23,15 +23,12 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState); 
-        }
 
         var result = await _authService.RegisterAsync(model);
         if (!result.Succeeded)
-        {
             return BadRequest(new { Errors = result.Errors.Select(e => e.Description) });
-        }
+
         return Ok(new { Message = "User created successfully" });
     }
 
@@ -43,13 +40,11 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid login attempt");
         
         var refreshToken = await _authService.GenerateJwtToken(user);
-        await _authService.SaveRefreshTokenAsync(user.Id, refreshToken);
+        await _authService.SaveRefreshTokenAsync(user, refreshToken);
         
         var response = new TokenResponseDto()
         {
-            UserId = user.Id,
             RefreshToken = refreshToken,
-            ExpiryDate = DateTime.UtcNow.AddMinutes(5),
             RedirectUrl = "http://localhost:5025/" 
         };
 
@@ -66,19 +61,18 @@ public class AuthController : ControllerBase
             return Unauthorized("Bearer token is missing");
         var bearerToken = authHeader.Substring("Bearer ".Length).Trim();
         
-        var user = await _authService.GetUserFromToken(bearerToken);
         if (!await _authService.ValidateRefreshTokenAsync(bearerToken))
             return Unauthorized("Bearer token is invalid.");
+        var user = await _authService.GetUserFromToken(bearerToken);
 
         //nu mai e nevoie de invalidarea tokenului. Acesta se suprascrie
         var newRefreshToken = await _authService.GenerateJwtToken(user);
-        await _authService.SaveRefreshTokenAsync(user.Id, newRefreshToken);
+        await _authService.SaveRefreshTokenAsync(user, newRefreshToken);
 
         var response = new TokenResponseDto()
         {
-            UserId = user.Id,
             RefreshToken = newRefreshToken,
-            ExpiryDate = DateTime.UtcNow.AddMinutes(5)
+            RedirectUrl = "" 
         };
 
         return Ok(response);

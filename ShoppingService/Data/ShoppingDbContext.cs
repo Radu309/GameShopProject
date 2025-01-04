@@ -79,13 +79,15 @@ public class ShoppingDbContext : DbContext
             {
                 Id = 1,
                 FirstName = "John",
-                LastName = "Doe"
+                LastName = "Doe",
+                Email = "john.doe@gmail.com",
             },
             new User
             {
                 Id = 2,
                 FirstName = "Radu",
-                LastName = "Neaca"
+                LastName = "Neaca",
+                Email = "radu.sabin309@gmail.com",
             }
             
         );

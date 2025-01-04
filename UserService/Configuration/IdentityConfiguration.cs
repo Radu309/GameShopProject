@@ -36,9 +36,7 @@ public static class IdentityConfiguration
         var key = jwtSettings["SecretKey"];
 
         if (string.IsNullOrEmpty(key))
-        {
             throw new ArgumentNullException("SecretKey", "The SecretKey is missing in the configuration.");
-        }
 
         var keyBytes = Encoding.UTF8.GetBytes(key);
 

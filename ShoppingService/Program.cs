@@ -1,18 +1,23 @@
 using Microsoft.EntityFrameworkCore;
+using ShoppingService.Configuration;
 using ShoppingService.Data;
 using ShoppingService.Models;
 using ShoppingService.Service;
 
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+// app configuration
+AppConfiguration.ConfigureServices(builder.Services, builder.Configuration);
 
 builder.Services.AddDbContext<ShoppingDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ShoppingServiceContextConnection")));
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); 
+// Add custom services
 builder.Services.AddScoped<GamesService>();
 
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -23,44 +28,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-// de realizat mai tarziu
-// builder.Services.AddAuthorization(opts => {
-//     opts.AddPolicy("Admin", policy => {
-//         policy.RequireClaim("Admin");
-//     });
-//     opts.AddPolicy("Customer", policy => {
-//         policy.RequireClaim("Customer");
-//     });
-// });
-// builder.Services.ConfigureApplicationCookie(options =>
-// {
-//     options.LoginPath = "/Identity/Account/Login";
-//     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-//     options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Expirare sesiune
-// });
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
-app.UseStaticFiles();
-app.MapControllers();
-app.MapRazorPages();
-
-app.UseAuthorization();
-app.UseAuthentication();
-
-app.UseRouting();
-app.UseHttpsRedirection();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Games}/{action=Index}/{id?}"
-);
-app.UseCors("AllowAll");
+// Configure middleware
+AppConfiguration.ConfigureMiddleware(app);
 
 app.Run();

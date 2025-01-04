@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using UserService.Models;
+using UserService.Models.Enum;
 
 namespace UserService.Data;
 
@@ -7,7 +8,11 @@ public class SeedData
 {
     public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
-        var roles = new[] { "Admin", "Client" };
+        var roles = Enum.GetValues(typeof(Roles))
+            .Cast<Roles>()
+            .Select(role => role.ToString())
+            .ToArray();
+
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))

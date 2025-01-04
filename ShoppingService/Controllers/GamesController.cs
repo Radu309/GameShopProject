@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ShoppingService.Models;
@@ -6,6 +7,8 @@ using ShoppingService.Service;
 
 namespace ShoppingService.Controllers;
 
+// [Authorize] 
+// [Authorize(Policy = "ClientPolicy")]
 public class GamesController : Controller
 {
     private readonly GamesService _gamesService;
@@ -17,7 +20,15 @@ public class GamesController : Controller
 
     [HttpGet]
     public IActionResult Index()
-    {
+    {   
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
+        var userRole = User.FindFirst(ClaimTypes.Role)?.Value; 
+        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+        Console.WriteLine("HEREEEEEEEEEEEEEEEEEE");
+        Console.WriteLine(userId);
+        Console.WriteLine(userRole);
+        Console.WriteLine(userEmail);
+        
         var games = _gamesService.GetAllGames();
         // TO DO: to add the logic for userId
         ViewBag.CurrentUserId = 1;
