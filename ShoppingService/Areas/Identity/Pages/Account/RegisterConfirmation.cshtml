@@ -1,0 +1,23 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Register confirmation";
+}
+
+<section id="only-one-message">
+    <div class="container">
+        <div class="box">
+            <h1 class="title">Confirm Email Address</h1>
+            <p class="message">
+                Please check your email to confirm your account.
+                If you don’t see it, please check your spam folder or contact support for assistance.
+            </p>
+            <p class="message">
+                You can close this page.
+            </p>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Identity/Layout.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/Identity/ShowMessage.css" asp-append-version="true"/>

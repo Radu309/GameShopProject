@@ -1,0 +1,27 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Log out";
+}
+
+<section id="only-one-message">
+    <div class="container">
+        <div class="box">
+            <h1 class="title">@ViewData["Title"]</h1>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <p class="message">You are currently logged in.</p>
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button type="submit" class="btn logout-btn">Click here to Logout</button>
+                </form>
+            }
+            else
+            {
+                <p class="message">You have successfully logged out of the application.</p>
+            }
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Identity/Layout.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/Identity/ShowMessage.css" asp-append-version="true"/>
