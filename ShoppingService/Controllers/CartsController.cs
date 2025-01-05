@@ -27,7 +27,7 @@ public class CartsController : Controller
             .Include(u => u.Cart)
             .ThenInclude(c => c.CartItems)
             .ThenInclude(ci => ci.Games)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .FirstOrDefaultAsync(u => u.Id  == userId.ToString());
 
         if (user == null)
             return NotFound("User not found.");
@@ -38,7 +38,7 @@ public class CartsController : Controller
 
         if (user.Cart == null)
         {
-            user.Cart = new Cart { UserId = userId };
+            user.Cart = new Cart { UserId = userId.ToString() };
             _context.Carts.Add(user.Cart);
             await _context.SaveChangesAsync();
         }
@@ -73,7 +73,7 @@ public class CartsController : Controller
             .Include(u => u.Cart)
             .ThenInclude(c => c.CartItems)
             .ThenInclude(ci => ci.Games)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId.ToString());
 
         if (user == null)
             return NotFound("User not found.");

@@ -1,6 +1,6 @@
 ﻿namespace ShoppingService.Models.Enum;
 
-public enum Role
+public enum Roles
 {
     Client,
     Admin,

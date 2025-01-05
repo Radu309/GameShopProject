@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
         <PrivateAssets>all</PrivateAssets>
@@ -36,6 +38,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Details.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Edit.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\CartItems\Index.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\Admin\Index.css" />
     </ItemGroup>
 
     <ItemGroup>

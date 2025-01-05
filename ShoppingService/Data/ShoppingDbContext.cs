@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShoppingService.Models;
 
 namespace ShoppingService.Data;
 
-public class ShoppingDbContext : DbContext
+public class ShoppingDbContext : IdentityDbContext<User>
 {
     public ShoppingDbContext(DbContextOptions<ShoppingDbContext> options)
         : base(options)
@@ -74,22 +76,12 @@ public class ShoppingDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = 1,
-                FirstName = "John",
-                LastName = "Doe",
-                Email = "john.doe@gmail.com",
-            },
-            new User
-            {
-                Id = 2,
-                FirstName = "Radu",
-                LastName = "Neaca",
-                Email = "radu.sabin309@gmail.com",
-            }
-            
-        );
+        modelBuilder.Entity<User>().ToTable("User");
+        modelBuilder.Entity<IdentityRole>().ToTable("_Roles");
+        modelBuilder.Entity<IdentityUserRole<string>>().ToTable("_UserRoles");
+        modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("_UserClaims");
+        modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("_UserLogins");
+        modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("_RoleClaims");
+        modelBuilder.Entity<IdentityUserToken<string>>().ToTable("_UserTokens");
     }
 }

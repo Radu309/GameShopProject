@@ -9,7 +9,7 @@ public class Cart
     [Range(0, double.MaxValue, ErrorMessage = "Total amount cannot be negative.")]
     public decimal TotalAmount { get; set; } = 0;
     [Required(ErrorMessage = "User ID is required.")]
-    public int UserId { get; set; }
+    public string UserId { get; set; }
     [JsonIgnore]
     public User? User { get; set; }
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();

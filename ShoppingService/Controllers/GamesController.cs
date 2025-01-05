@@ -7,7 +7,7 @@ using ShoppingService.Service;
 
 namespace ShoppingService.Controllers;
 
-// [Authorize] 
+[Authorize] 
 // [Authorize(Policy = "ClientPolicy")]
 public class GamesController : Controller
 {
@@ -21,14 +21,6 @@ public class GamesController : Controller
     [HttpGet]
     public IActionResult Index()
     {   
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; 
-        var userRole = User.FindFirst(ClaimTypes.Role)?.Value; 
-        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-        Console.WriteLine("HEREEEEEEEEEEEEEEEEEE");
-        Console.WriteLine(userId);
-        Console.WriteLine(userRole);
-        Console.WriteLine(userEmail);
-        
         var games = _gamesService.GetAllGames();
         // TO DO: to add the logic for userId
         ViewBag.CurrentUserId = 1;
