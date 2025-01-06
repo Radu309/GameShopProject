@@ -39,39 +39,36 @@
                 @foreach (var review in Model)
                 {
                     <li class="list-item">
-                        <div class="review-info">
-                            <div class="review-attribute">
-                                <p>@review.Rating</p>
-                            </div>
+                        <a asp-controller="Reviews" asp-action="Details" asp-route-id="@review.Id">
+                            <div class="review-info">
+                                <div class="review-attribute">
+                                    <p>@review.Rating/5</p>
+                                </div>
 
-                            <div class="review-attribute">
-                                <p>@review.Comment</p>
-                            </div>
+                                <div class="review-attribute">
+                                    <p>@review.Comment</p>
+                                </div>
 
-                            <div class="review-attribute">
-                                <p>@review.ReviewDate.ToString("MM/dd/yyyy")</p>
-                            </div>
+                                <div class="review-attribute">
+                                    <p>@review.ReviewDate.ToString("MM/dd/yyyy")</p>
+                                </div>
 
-                            <div class="review-attribute">
-                                <p>@review.Game.Description</p>
-                            </div>
+                                <div class="review-attribute">
+                                    <p>@review.Game.Description</p>
+                                </div>
 
-                            <div class="review-attribute">
-                                <p>@review.User.FirstName @review.User.LastName</p>
-                            </div>
+                                <div class="review-attribute">
+                                    <p>@review.User.FirstName @review.User.LastName</p>
+                                </div>
 
-                            <div class="review-attribute">
-                                <form asp-action="Details" method="get">
-                                    <input type="hidden" name="id" value="@review.Id" />
-                                    <button type="submit" class="btn btn-info">Details</button>
-                                </form>
-
-                                <form asp-action="Delete" method="post">
-                                    <input type="hidden" name="id" value="@review.Id" />
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                                <div class="review-attribute">
+                                    <form asp-action="Delete" method="get">
+                                        <input type="hidden" name="id" value="@review.Id"/>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </li>
                 }
             </ul>

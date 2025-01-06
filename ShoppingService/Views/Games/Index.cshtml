@@ -73,7 +73,7 @@
                                         <button type="submit" class="btn btn-buy">Buy</button>
                                     </form>
                                     
-                                    <form asp-controller="Games" asp-action="Delete" method="post">
+                                    <form asp-controller="Games" asp-action="Delete" method="get">
                                         <input type="hidden" name="id" value="@game.Id"/>
                                         <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>

@@ -6,7 +6,7 @@
 
 
 <section id="only-one-message">
-    <div class="container">
+    <div class="layout-container">
         <div class="box">
             @if (Model.StatusMessage != null)
             {
@@ -18,7 +18,7 @@
                 </p>
                 <p class="message">
                     Click here to log in with your new account:
-                    <a asp-controller="Games" asp-action="Index"> Login</a>
+                    <a class="btn-click-here" asp-controller="Games" asp-action="Index"> Login</a>
                 </p>
             }
             else
@@ -32,5 +32,5 @@
     </div>
 </section>
 
-<link rel="stylesheet" href="~/css/Identity/Layout.css" asp-append-version="true"/>
-<link rel="stylesheet" href="~/css/Identity/ShowMessage.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/ShowMessage.css" asp-append-version="true"/>

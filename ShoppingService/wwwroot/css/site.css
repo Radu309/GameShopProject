@@ -4,10 +4,6 @@
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -22,17 +18,18 @@ html, body {
   background-image: url("/images/login-background.jpg");
   background-size: cover;
   background-position: center;
+  a {
+    color: inherit;
+    text-decoration: none; /
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
 }
 
-main{
+#main{
   width: 100%;
   height: 100%;
 }
-/*  pentru a ascunde linia de sub scris  */
-a {
-  text-decoration: none; /
-}
 
-a:hover {
-  text-decoration: none;
-}

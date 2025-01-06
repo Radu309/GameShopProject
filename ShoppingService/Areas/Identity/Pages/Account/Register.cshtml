@@ -5,7 +5,7 @@
 }
 
 <section id="Register">
-    <div class="container">
+    <div class="layout-container">
         <div class="box">
             <h1>@ViewData["Title"]</h1>
             <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -60,5 +60,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <link rel="stylesheet" href="~/css/Identity/Layout.css" />
+    <link rel="stylesheet" href="~/css/Layout.css" />
 }

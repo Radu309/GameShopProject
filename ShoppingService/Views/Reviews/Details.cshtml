@@ -17,7 +17,7 @@
                         @Html.DisplayNameFor(model => model.Rating)
                     </dt>
                     <dd class="form-input">
-                        @Html.DisplayFor(model => model.Rating)
+                        @Html.DisplayFor(model => model.Rating)/5
                     </dd>
                 </div>
 
@@ -53,7 +53,7 @@
                         @Html.DisplayNameFor(model => model.User)
                     </dt>
                     <dd class="form-input">
-                        @Html.DisplayFor(model => model.UserId)
+                        @Html.DisplayFor(model => model.User.Email)
                     </dd>
                 </div>
             </dl>

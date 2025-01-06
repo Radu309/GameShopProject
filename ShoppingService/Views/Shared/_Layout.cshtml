@@ -8,32 +8,26 @@
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true"/>
 </head>
 <body>
-<header id="header">
-    <div class="header-body">
-        <div class="header-container">
-            <a asp-controller="Games" asp-action="Index">
-                <div class="icon-text" asp-area="" asp-controller="Games" asp-action="Index">
-                    <span>Game Shop</span>
-                    <span>-online-</span>
-                </div>
-            </a>
-            <div class="navbar">
-                <a href="/Carts/ViewCart/1">
-                    <img src="~/icons/shopping-cart.svg" alt="Cart" class="cart-icon" />
+    <header id="header">
+        <div class="header-body">
+            <div class="header-container">
+                <a asp-controller="Games" asp-action="Index">
+                    <div class="icon-text" asp-area="" asp-controller="Games" asp-action="Index">
+                        <span>Game Shop</span>
+                        <span>-online-</span>
+                    </div>
                 </a>
-                <partial name="_LoginPartial"/>
+                <div class="navbar">
+                    <partial name="_LoginPartial"/>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main role="main" class="pb-3">
-    @RenderBody()
-</main>
+    <main id="main" role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
-<footer>
-</footer>
-
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,4 +1,4 @@
-@model IEnumerable<ShoppingService.Models.Order>
+﻿@model ShoppingService.Models.User
 
 @{
     ViewData["Title"] = "Orders List";
@@ -6,12 +6,7 @@
 <section id="OrderIndex">
     <div class="orders-body">
         <div class="orders-container">
-            <h1>Orders List</h1>
-            @* <h1> *@
-            @*     <form asp-controller="Orders" asp-action="Create" method="get"> *@
-            @*         <button class="create-btn">Create New Order</button> *@
-            @*     </form> *@
-            @* </h1> *@
+            <h1>@Model.FirstName Orders</h1>
             <div class="order-attributes-header">
                 <div class="order-attribute-header">
                     <h3>Date</h3>
@@ -20,14 +15,11 @@
                     <h3>Total Amount</h3>
                 </div>
                 <div class="order-attribute-header">
-                    <h3>User</h3>
-                </div>
-                <div class="order-attribute-header">
-                    <h3>Action</h3>
+                    <h3></h3>
                 </div>
             </div>
             <ul class="list">
-                @foreach (var order in Model)
+                @foreach (var order in Model.Orders)
                 {
                     <li class="list-item">
                         <a asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id">
@@ -35,15 +27,9 @@
                                 <div class="order-attribute">
                                     <p>@order.Date.ToString("d")</p>
                                 </div>
-
                                 <div class="order-attribute">
                                     <p>@order.TotalAmount.ToString("C2")</p>
                                 </div>
-
-                                <div class="order-attribute">
-                                    <p>@order.User.Email</p>
-                                </div>
-
                                 <div class="order-attribute">
                                     <form asp-controller="Orders" asp-action="Delete" method="get">
                                         <input type="hidden" name="id" value="@order.Id"/>

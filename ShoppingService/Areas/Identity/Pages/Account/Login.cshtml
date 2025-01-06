@@ -5,18 +5,18 @@
     ViewData["Title"] = "Login";
 }
 <section id="Login">
-    <div class="container">
+    <div class="layout-container">
         <div class="box">
             <h1>@ViewData["Title"]</h1>
             <form id="account" method="post">
                 <div class="form-group">
                     <label asp-for="Input.Email" class="form-label">Email</label>
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="Enter your email" required />
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="Enter your email" required/>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Password" class="form-label">Password</label>
-                    <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" placeholder="Enter your password" required />
+                    <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" placeholder="Enter your password" required/>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn login-btn">Login</button>
@@ -30,5 +30,5 @@
 </section>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <link rel="stylesheet" href="~/css/Identity/Layout.css" />
+    <link rel="stylesheet" href="~/css/Layout.css" />
 }

@@ -22,8 +22,11 @@ public class GamesController : Controller
     public IActionResult Index()
     {   
         var games = _gamesService.GetAllGames();
-        // TO DO: to add the logic for userId
-        ViewBag.CurrentUserId = 1;
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
+            return Unauthorized();
+        ViewBag.CurrentUserId = userId;
 
         // ViewBag.IsAdmin = User.IsInRole("Admin");
         return View(games);
@@ -43,13 +46,8 @@ public class GamesController : Controller
     public async Task<IActionResult> Create(Game game, IFormFile[] imageFiles)
     {
         if (!ModelState.IsValid)
-        {
-            // foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-            // {
-            //     Console.WriteLine(error.ErrorMessage);
-            // }
             return View(game);
-        }
+        
         if (imageFiles.IsNullOrEmpty())
         {
             ModelState.AddModelError("", "Please upload at least one image.");
@@ -98,6 +96,7 @@ public class GamesController : Controller
         return RedirectToAction(nameof(Edit), new { id = gameId });
     }
 
+    // Get
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();

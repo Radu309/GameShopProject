@@ -5,7 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 <section id="Account">
-    <div class="container">
+    <div class="layout-container">
         <div class="box">
             <h1>@ViewData["Title"]</h1>
 
@@ -21,12 +21,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.FirstName" class="form-label">First Name</label>
-                    <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" placeholder="Enter your first name" required />
+                    <input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" placeholder="Enter your first name" />
                     <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.LastName" class="form-label">Last Name</label>
-                    <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" placeholder="Enter your last name" required />
+                    <input asp-for="Input.LastName" class="form-control" autocomplete="lastname" placeholder="Enter your last name"/>
                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -42,6 +42,6 @@
 </section>
 
 @section Scripts {
-    <link rel="stylesheet" href="~/css/Identity/Layout.css" />
+    <link rel="stylesheet" href="~/css/Layout.css" />
     <partial name="_ValidationScriptsPartial" />
 }

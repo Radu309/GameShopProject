@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +22,13 @@ public class CartsController : Controller
     }
 
     [HttpPost("Carts/AddGameToCart")]
-    public async Task<IActionResult> AddGameToCart(int userId, int gameId, int quantity)
+    public async Task<IActionResult> AddGameToCart(string userId, int gameId, int quantity)
     {
         var user = await _context.Users
             .Include(u => u.Cart)
             .ThenInclude(c => c.CartItems)
             .ThenInclude(ci => ci.Games)
-            .FirstOrDefaultAsync(u => u.Id  == userId.ToString());
+            .FirstOrDefaultAsync(u => u.Id  == userId);
 
         if (user == null)
             return NotFound("User not found.");
@@ -67,13 +68,13 @@ public class CartsController : Controller
     }
     
     [HttpGet("Carts/ViewCart/{userId}")]
-    public async Task<IActionResult> ViewCart(int userId)
+    public async Task<IActionResult> ViewCart(string userId)
     {
         var user = await _context.Users
             .Include(u => u.Cart)
             .ThenInclude(c => c.CartItems)
             .ThenInclude(ci => ci.Games)
-            .FirstOrDefaultAsync(u => u.Id == userId.ToString());
+            .FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
             return NotFound("User not found.");

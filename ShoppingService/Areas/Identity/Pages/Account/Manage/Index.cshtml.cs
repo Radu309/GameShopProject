@@ -52,15 +52,12 @@ namespace ShoppingService.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-            [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
             
-            [Required]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -112,6 +109,7 @@ namespace ShoppingService.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            // Update PhoneNumber if it's changed
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -119,6 +117,19 @@ namespace ShoppingService.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            // Update FirstName and LastName if they are changed
+            if (Input.FirstName != user.FirstName || Input.LastName != user.LastName)
+            {
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to update your profile.";
                     return RedirectToPage();
                 }
             }
