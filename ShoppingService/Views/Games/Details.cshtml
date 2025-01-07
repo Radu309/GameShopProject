@@ -65,7 +65,6 @@
                                 {
                                     <div class="review-card">
                                         <div class="review-header">
-                                            @*  de modificat  *@
                                             <h3>@review.User.FirstName</h3>
                                             <p class="review-rate">Rating: @review.Rating/5</p>
                                         </div>
@@ -83,7 +82,10 @@
             <!-- Butoane de navigare -->
             <div class="game-action-buttons">
                 <a asp-action="Index" class="game-btn game-btn-back">Back to List</a>
-                <a asp-controller="Reviews" asp-action="Create" asp-route-gameId="@Model.Id" class="game-btn game-btn-back">Create Review</a>
+                @if (ViewBag.isClient)
+                {
+                    <a asp-controller="Reviews" asp-action="Create" asp-route-gameId="@Model.Id" class="game-btn game-btn-back">Create Review</a>
+                }
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShoppingService.Data;
 using ShoppingService.Models;
+using ShoppingService.Models.Enum;
 
 namespace ShoppingService.Controllers;
 
@@ -19,13 +20,15 @@ public class OrdersController : Controller
     }
 
     // GET: Orders
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> Index()
     {
         var orders = _context.Orders.Include(o => o.User);
         return View(await orders.ToListAsync());
     }
     
-    // GET: Orders
+    // GET: Orders /Orders/UserOrders/id?
+    [Authorize(Policy = "ClientPolicy")]
     public async Task<IActionResult> UserOrders()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -40,8 +43,9 @@ public class OrdersController : Controller
     }
 
     // GET: Orders/Details/5
+    [Authorize(Policy = "AdminClientPolicy")]
     public async Task<IActionResult> Details(int? id)
-    {
+    {   
         if (id == null)
             return NotFound();
 
@@ -52,7 +56,6 @@ public class OrdersController : Controller
             .FirstOrDefaultAsync(m => m.Id == id);
         if (order == null)
             return NotFound();
-
         return View(order);
     }
 
@@ -61,6 +64,7 @@ public class OrdersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Policy = "ClientPolicy")]
     public async Task<IActionResult> Create(int cartId)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
@@ -126,6 +130,7 @@ public class OrdersController : Controller
             });
         }
     }
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -136,6 +141,7 @@ public class OrdersController : Controller
         return order != null ? View(order) : NotFound();
     }
     
+    [Authorize(Policy = "AdminPolicy")]
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)

@@ -11,6 +11,7 @@ using ShoppingService.Data;
 using ShoppingService.Models;
 
 namespace ShoppingService.Controllers;
+
 [Authorize] 
 public class ReviewsController : Controller
 {
@@ -22,13 +23,15 @@ public class ReviewsController : Controller
     }
 
     // GET: Reviews
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> Index()
     {
-        var shoppingDbContext = _context.Reviews.Include(r => r.Game).Include(r => r.User);
-        return View(await shoppingDbContext.ToListAsync());
+        var reviews = _context.Reviews.Include(r => r.Game).Include(r => r.User);
+        return View(await reviews.ToListAsync());
     }
 
     // GET: Reviews/Details/5
+    [Authorize(Policy = "AdminClientPolicy")]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -49,6 +52,7 @@ public class ReviewsController : Controller
     }
 
     // GET: Reviews/Create
+    [Authorize(Policy = "ClientPolicy")]
     public IActionResult Create(int? gameId)
     {
         if (gameId == null)
@@ -66,18 +70,16 @@ public class ReviewsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [Authorize(Policy = "ClientPolicy")]
     public async Task<IActionResult> Create([Bind("Rating,Comment,UserId,GameId")] Review review)
     {
-        Console.WriteLine("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         if (ModelState.IsValid)
         {
             review.ReviewDate = DateTime.UtcNow;
             _context.Add(review);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Games");
         }
-        Console.WriteLine("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 1");
-
         foreach (var modelState in ModelState.Values)
         {
             foreach (var error in modelState.Errors)
@@ -89,63 +91,9 @@ public class ReviewsController : Controller
         ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
         return View(review);
     }
-
-    // GET: Reviews/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var review = await _context.Reviews.FindAsync(id);
-        if (review == null)
-        {
-            return NotFound();
-        }
-        ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id", review.GameId);
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
-        return View(review);
-    }
-
-    // POST: Reviews/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,Rating,Comment,ReviewDate,UserId,GameId")] Review review)
-    {
-        if (id != review.Id)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(review);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReviewExists(review.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id", review.GameId);
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", review.UserId);
-        return View(review);
-    }
-
+    
     // GET: Reviews/Delete/5
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
@@ -163,6 +111,7 @@ public class ReviewsController : Controller
     // POST: Reviews/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
+    [Authorize(Policy = "AdminPolicy")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var review = await _context.Reviews.FindAsync(id);

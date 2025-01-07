@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ShoppingService.Data;
 using ShoppingService.Models;
+using ShoppingService.Models.Enum;
 using ShoppingService.Service;
 
 namespace ShoppingService.Configuration;
@@ -49,11 +50,14 @@ public static class AppConfiguration
         });
         
         services.AddAuthorization(options => {
-            options.AddPolicy("Admin", policy => {
-                policy.RequireClaim("Admin");
+            options.AddPolicy("AdminPolicy", policy => {
+                policy.RequireRole(Roles.Admin.ToString());
             });
-            options.AddPolicy("Customer", policy => {
-                policy.RequireClaim("Customer");
+            options.AddPolicy("ClientPolicy", policy => {
+                policy.RequireRole(Roles.Client.ToString());
+            });
+            options.AddPolicy("AdminClientPolicy", policy => {
+                policy.RequireRole(Roles.Admin.ToString(), Roles.Client.ToString());
             });
         });
 

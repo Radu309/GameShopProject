@@ -14,9 +14,6 @@
                 <div class="order-attribute-header">
                     <h3>Total Amount</h3>
                 </div>
-                <div class="order-attribute-header">
-                    <h3></h3>
-                </div>
             </div>
             <ul class="list">
                 @foreach (var order in Model.Orders)
@@ -29,12 +26,6 @@
                                 </div>
                                 <div class="order-attribute">
                                     <p>@order.TotalAmount.ToString("C2")</p>
-                                </div>
-                                <div class="order-attribute">
-                                    <form asp-controller="Orders" asp-action="Delete" method="get">
-                                        <input type="hidden" name="id" value="@order.Id"/>
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
                                 </div>
                             </div>
                         </a>

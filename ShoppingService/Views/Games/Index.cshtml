@@ -7,15 +7,14 @@
     <div class="games-body">
         <div class="games-container">
             <h1>Games List</h1>
-            @* @if (ViewBag.IsAdmin) *@
-            @* { *@
+            @if (ViewBag.IsAdmin)
+            {
                 <h1>
                     <form asp-controller="Games" asp-action="Create" method="get">
                         <button class="create-btn">Create New Game</button>
                     </form>
                 </h1>
-            @* } *@
-            <!-- Titluri pentru atributele fiecărui joc -->
+            }
             <div class="game-attributes-header">
                 <div class="game-attribute-header">
                     <h3>Game</h3>
@@ -36,7 +35,6 @@
                     <li class="list-item">
                         <a asp-controller="Games" asp-action="Details" asp-route-id="@game.Id">
                             <div class="game-info">
-                                <!-- Titluri deasupra atributelor -->
                                 <div class="game-attribute">
                                     <h3>@game.Name</h3>
                                     @if (game.Images != null && game.Images.Any())
@@ -52,7 +50,7 @@
                                 </div>
 
                                 <div class="game-attribute">
-                                    <p>@game.Price.ToString("C2")</p> <!-- Format price as currency -->
+                                    <p>@game.Price.ToString("C2")</p> 
                                 </div>
 
                                 <div class="game-attribute">
@@ -60,28 +58,26 @@
                                 </div>
 
                                 <div class="game-attribute">
-                                    @* @if (ViewBag.IsAdmin) *@
-                                    @* { *@
-                                    <form asp-controller="Games" asp-action="Edit" method="get">
-                                        <input type="hidden" name="id" value="@game.Id"/>
-                                        <button type="submit" class="btn btn-primary">Edit</button>
-                                    </form>
-                                    <form asp-controller="Carts" asp-action="AddGameToCart" method="post">
-                                        <input type="hidden" name="gameId" value="@game.Id" />
-                                        <input type="hidden" name="userId" value="@ViewBag.CurrentUserId" />
-                                        <input type="hidden" name="quantity" value="1" />
-                                        <button type="submit" class="btn btn-buy">Buy</button>
-                                    </form>
-                                    
-                                    <form asp-controller="Games" asp-action="Delete" method="get">
-                                        <input type="hidden" name="id" value="@game.Id"/>
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                    @* } *@
-                                    @* else *@
-                                    @* { *@
-                                        @* <button>Buy</button> *@
-                                    @* } *@
+                                    @if (ViewBag.IsAdmin)
+                                    {
+                                        <form asp-controller="Games" asp-action="Edit" method="get">
+                                            <input type="hidden" name="id" value="@game.Id"/>
+                                            <button type="submit" class="btn btn-primary">Edit</button>
+                                        </form>
+                                        <form asp-controller="Games" asp-action="Delete" method="get">
+                                            <input type="hidden" name="id" value="@game.Id"/>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        }
+                                    else
+                                    {
+                                        <form asp-controller="Carts" asp-action="AddGameToCart" method="post">
+                                            <input type="hidden" name="gameId" value="@game.Id" />
+                                            <input type="hidden" name="userId" value="@ViewBag.CurrentUserId" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <button type="submit" class="btn btn-buy">Buy</button>
+                                        </form>
+                                    }
                                 </div>
                             </div>
                         </a>

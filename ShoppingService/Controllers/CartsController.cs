@@ -12,6 +12,7 @@ using ShoppingService.Models;
 
 namespace ShoppingService.Controllers;
 
+[Authorize(Policy = "ClientPolicy")]
 public class CartsController : Controller
 {
     private readonly ShoppingDbContext _context;
@@ -81,6 +82,7 @@ public class CartsController : Controller
 
         return View(user.Cart);
     }
+    
     [HttpPost]
     public async Task<IActionResult> UpdateQuantity(int cartItemId, string operation)
     {

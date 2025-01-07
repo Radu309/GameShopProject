@@ -4,7 +4,19 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<section id="only-one-message">
+    <div class="layout-container">
+        <div class="box">
+            <p class="message">
+                @ViewData["Title"]
+            </p>
+            <p class="message">
+                You do not have access to this resource. Go 
+                <a class="btn-click-here" asp-controller="Games" asp-action="Index"> Home</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true"/>
+<link rel="stylesheet" href="~/css/ShowMessage.css" asp-append-version="true"/>

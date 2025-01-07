@@ -76,7 +76,14 @@
             </div>
 
             <div class="actions">
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                }
+                else
+                {
+                    <a asp-action="UserOrders" class="btn btn-secondary">Back to List</a>
+                }
             </div>
         </div>
     </div>
