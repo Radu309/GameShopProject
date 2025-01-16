@@ -7,9 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.23.1" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.57.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
         <PrivateAssets>all</PrivateAssets>
@@ -49,5 +57,29 @@
       <UpToDateCheckInput Remove="Views\Reviews\Create.cshtml" />
       <UpToDateCheckInput Remove="Views\Reviews\Delete.cshtml" />
     </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
+    </ItemGroup>
+
+<!--    <ItemGroup>-->
+<!--      <ProjectReference Include="..\GrpcService\GrpcService.csproj" />-->
+<!--    </ItemGroup>-->
+
+<!--    <ItemGroup>-->
+<!--      <Protobuf Include="Protos\greet.proto">-->
+<!--        <GrpcServices>Server</GrpcServices>-->
+<!--        <Access>Public</Access>-->
+<!--        <ProtoCompile>True</ProtoCompile>-->
+<!--        <CompileOutputs>True</CompileOutputs>-->
+<!--        <OutputDir>obj\Debug\net8.0\</OutputDir>-->
+<!--        <Generator>MSBuild:Compile</Generator>-->
+<!--      </Protobuf>-->
+<!--    </ItemGroup>-->
+
 
 </Project>
