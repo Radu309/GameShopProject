@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingService", "Shopping
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcService", "GrpcService\GrpcService.csproj", "{FDC69F83-01B8-405B-A830-46E15C4A8121}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService", "ChatService\ChatService.csproj", "{C50AD8BA-D984-46F6-B547-734406F70C23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService", "ChatService\ChatService.csproj", "{448B3F2F-AA5C-485C-9AFC-6A452263618B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +26,9 @@ Global
 		{FDC69F83-01B8-405B-A830-46E15C4A8121}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDC69F83-01B8-405B-A830-46E15C4A8121}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDC69F83-01B8-405B-A830-46E15C4A8121}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C50AD8BA-D984-46F6-B547-734406F70C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C50AD8BA-D984-46F6-B547-734406F70C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C50AD8BA-D984-46F6-B547-734406F70C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C50AD8BA-D984-46F6-B547-734406F70C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{448B3F2F-AA5C-485C-9AFC-6A452263618B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{448B3F2F-AA5C-485C-9AFC-6A452263618B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{448B3F2F-AA5C-485C-9AFC-6A452263618B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{448B3F2F-AA5C-485C-9AFC-6A452263618B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

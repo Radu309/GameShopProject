@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using ShoppingService.Data;
 using ShoppingService.Models;
 using ShoppingService.Models.Enum;
@@ -35,18 +40,23 @@ public static class AppConfiguration
     
     private static void ConfigureIdentity(IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.SignIn.RequireConfirmedAccount = true;
-            })
+        services.AddIdentity<User, IdentityRole>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ShoppingDbContext>()
             .AddDefaultTokenProviders();
         services.Configure<IdentityOptions>(options =>
         {
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.SignIn.RequireConfirmedAccount = true;
             options.User.RequireUniqueEmail = true;
+            
+        });
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         });
         
         services.AddAuthorization(options => {
@@ -92,7 +102,6 @@ public static class AppConfiguration
             pattern: "{controller=Games}/{action=Index}/{id?}");
 
         app.MapRazorPages();
-        
     }
     
 }

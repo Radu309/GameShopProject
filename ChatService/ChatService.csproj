@@ -7,13 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\greet.proto" GrpcServices="Server"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.11" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.11" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\chat.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\signalr\signalr.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\signalr\signalr.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\signalr\signalr.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\signalr\signalr.min.js.map" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
 </Project>

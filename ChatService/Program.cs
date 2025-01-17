@@ -1,15 +1,24 @@
-using ChatService.Services;
+using ChatService.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc();
 builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
-app.MapGrpcService<GreeterService>();
-app.MapGet("/",
-    () =>
-        "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+app.UseStaticFiles();
 
+app.UseCors(); 
+app.MapHub<ChatHub>("/chatHub");
 app.Run();
