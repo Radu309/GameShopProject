@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using ShoppingService.Data;
+using ShoppingService.Hubs;
 using ShoppingService.Models;
 using ShoppingService.Models.Enum;
 using ShoppingService.Service;
@@ -19,6 +20,7 @@ public static class AppConfiguration
     {
         services.AddScoped<GamesService>();
         services.AddSingleton<IEmailSender, EmailSender>();
+        services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
         services.AddDbContext<ShoppingDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("ShoppingServiceContextConnection")));
 
@@ -34,30 +36,27 @@ public static class AppConfiguration
 
         services.AddControllersWithViews();
         services.AddRazorPages();
+        services.AddSignalR();
         
         ConfigureIdentity(services);
     }
     
     private static void ConfigureIdentity(IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole>()
+        services.AddIdentity<User, IdentityRole>
+            (options =>
+            {
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.SignIn.RequireConfirmedEmail = true;
+            })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ShoppingDbContext>()
             .AddDefaultTokenProviders();
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequireUppercase = true;
-            options.SignIn.RequireConfirmedAccount = true;
-            options.User.RequireUniqueEmail = true;
-            
-        });
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        });
         
         services.AddAuthorization(options => {
             options.AddPolicy("AdminPolicy", policy => {
@@ -97,6 +96,7 @@ public static class AppConfiguration
         app.UseAuthentication();
         app.UseAuthorization();
 
+        app.MapHub<ChatHub>("/chatHub");
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Games}/{action=Index}/{id?}");

@@ -65,5 +65,24 @@
     .btn:hover {
         opacity: 0.9;
     }
+
+    .list-group {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        text-align: left;
+        max-height: 200px; 
+        overflow-y: auto;
+        background: #f0f0f0;
+        border-radius: 5px;
+    }
+
+    .list-group li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 }
 

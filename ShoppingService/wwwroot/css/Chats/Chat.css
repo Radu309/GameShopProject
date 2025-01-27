@@ -1,0 +1,160 @@
+﻿#Chat {
+    font-family: Arial, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .chat-app {
+        width: 100%;
+        max-width: 1200px;
+        height: 80vh;
+        display: flex;
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Sidebar pentru utilizatori */
+
+    .chat-sidebar {
+        width: 30%;
+        background-color: #075e54;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-header {
+        padding: 15px;
+        background-color: #128c7e;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .user-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .user {
+        padding: 15px;
+        border-bottom: 1px solid #064c48;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .user:hover, .user.active {
+        background-color: #0d6f64;
+    }
+
+    .user-name {
+        font-weight: bold;
+        display: block;
+    }
+
+    .last-message {
+        font-size: 12px;
+        color: #c8eceb;
+    }
+
+    /* Secțiunea principală pentru mesaje */
+
+    .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #ece5dd;
+    }
+
+    .chat-header {
+        background-color: #075e54;
+        color: #ffffff;
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        max-width: 75%;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-received {
+        align-self: flex-start;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+    }
+
+    .message-sent {
+        align-self: flex-end;
+        background-color: #dcf8c6;
+        border: 1px solid #ddd;
+    }
+
+    .message-text {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .message-time {
+        font-size: 10px;
+        color: #999;
+        margin-top: 5px;
+        align-self: flex-end;
+    }
+
+    /* Input pentru mesaje */
+
+    .chat-input {
+        display: flex;
+        padding: 10px;
+        background-color: #ffffff;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+    }
+
+    .chat-input button {
+        margin-left: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #ffffff;
+        background-color: #075e54;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .chat-input button:hover {
+        background-color: #128c7e;
+    }
+}

@@ -7,15 +7,12 @@
     @if (SignInManager.IsSignedIn(User))
     {
         var user = await UserManager.GetUserAsync(User); 
-        @if (User.IsInRole("Admin"))
-        {
-            <li class="nav-item">
-                @* <form class="form-inline" asp-controller="Admin" asp-action="Index"> *@
-                    <button class="btn btn-admin" id="adminButton">Admin Dashboard</button>
-                @* </form> *@
-            </li>
-        }
         
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="Chats" asp-action="Index" >
+                ChatAll
+            </a>
+        </li>
         <li class="nav-item">
             <a asp-controller="Carts" asp-action="ViewCart" asp-route-id="@user?.Id">
                 <img src="~/icons/shopping-cart.svg" alt="Cart" class="cart-icon"/>

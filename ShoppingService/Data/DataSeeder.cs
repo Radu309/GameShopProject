@@ -27,15 +27,17 @@ public class DataSeeder
         {
             adminUser = new User()
             {
-                UserName = "Username",
+                UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
                 FirstName = "First Name",
                 LastName = "Last Name",
             };
-            var result = await userManager.CreateAsync(adminUser, "Admin123!");
+            var result = await userManager.CreateAsync(adminUser, "Parola123!");
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, Roles.Admin.ToString());
+                adminUser.EmailConfirmed = true;
+                await userManager.UpdateAsync(adminUser);
             }
         }
     }

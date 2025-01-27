@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="Chat">
+    <div class="layout-container">
+        <div class="box">
+            <h1>@ViewData["Title"]</h1>
+            <p>Use this page to chat with other users</p>
+
+            <div class="form-group">
+                <label for="senderId">Sender</label>
+                <input type="text" id="senderId" value="@ViewBag.UserEmail" disabled />
+            </div>
+            
+            <div class="form-group">
+                <label for="receiverId">Receiver</label>
+                <input type="text" id="receiverId" placeholder="Enter receiver email"/>
+            </div>
+
+            <div class="form-group">
+                <label for="messageInput">Message</label>
+                <input type="text" id="messageInput" placeholder="Enter your message" />
+            </div>
+
+            <button id="sendButton" class="btn login-btn">Send Message</button>
+
+            <hr />
+
+            <div>
+                <h2>Messages</h2>
+                <ul id="messagesList" class="list-group"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true" />
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/lib/signalr/signalr.min.js"></script>
+<script src="~/js/Chat.js"></script>

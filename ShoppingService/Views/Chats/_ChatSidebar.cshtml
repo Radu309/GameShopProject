@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ShoppingService.Models.User>
+
+
+<div class="sidebar-header">
+    <h2>Users</h2>
+</div>
+<ul id="userList" class="user-list">
+    @foreach (var user in Model)
+    {
+        <li class="user active" onclick="updateChatMain('@user.Id')">
+            <span class="user-name">@user.FirstName @user.LastName</span>
+            <span class="last-message">Last message here //TO do</span>
+        </li>
+    }
+</ul>
+
+
+<script>
+    function updateChatMain(receiverId) {
+        fetch(`/chat/${receiverId}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch chat content.');
+            }
+            return response.text();
+        })
+        .then(html => {
+            document.querySelector('#chat-main').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
