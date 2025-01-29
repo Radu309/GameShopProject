@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ShoppingService.Models.User>
+
+@{
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="Chat">
+    <div class="chat-app">
+        <div id="chat-sidebar" class="chat-sidebar">
+            <div class="sidebar-header">
+                <h2>@ViewBag.Sender.FirstName</h2>
+            </div>
+            <ul id="userList" class="user-list">
+                @foreach (var user in Model)
+                {
+                    <li class="user active">
+                        <a asp-controller="Chats" asp-action="ChatOneUser" asp-route-receiverId="@user.Id">
+                            <span class="user-name">@user.FirstName @user.LastName</span>
+                            <span class="last-message">Last message here //TO do</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div id="chat-main" class="chat-main">
+            <div class="chat-header">
+                <h2>
+                    <span>@ViewBag.Receiver.Email</span>
+                    <input id="senderId" type="hidden" value="@ViewBag.Sender.Email" />
+                    <input id="receiverId" type="hidden" value="@ViewBag.Receiver.Email" />
+                </h2>
+            </div>
+            <div id="messagesList" class="chat-messages">
+                @* PENTRU DEMO *@
+                @* <div class="message message-received"> *@
+                @*     <p class="message-text">Hello, how are you?</p> *@
+                @*     <span class="message-time">10:30 AM</span> *@
+                @* </div> *@
+                @* <div class="message message-sent"> *@
+                @*     <p class="message-text">I'm good, thank you! And you?</p> *@
+                @*     <span class="message-time">10:31 AM</span> *@
+                @* </div> *@
+            </div>
+
+            <div class="chat-input">
+                <label for="messageToSend"></label>
+                <input id="messageToSend" type="text" placeholder="Type a message..."/>
+                <button id="sendButton" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Chats/Chat.css" asp-append-version="true"/>
+<script src="~/lib/signalr/signalr.js"></script>
+<script src="~/lib/signalr/signalr.min.js"></script>
+<script src="~/js/Chat.js"></script>

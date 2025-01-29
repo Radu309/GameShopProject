@@ -29,8 +29,8 @@ public class DataSeeder
             {
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
-                FirstName = "First Name",
-                LastName = "Last Name",
+                FirstName = "Admin",
+                LastName = "Boss",
             };
             var result = await userManager.CreateAsync(adminUser, "Parola123!");
             if (result.Succeeded)

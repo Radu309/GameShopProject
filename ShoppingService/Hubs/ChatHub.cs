@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ShoppingService.Models.Dto;
 
 namespace ShoppingService.Hubs;
 
@@ -23,10 +24,15 @@ public class ChatHub : Hub
     }
     public async Task SendMessageToOne(string sender, string receiver, string message)
     {
-        
+        MessageDto messageDto = new MessageDto();
+        messageDto.Sender = sender; 
+        messageDto.Receiver = receiver;
+        messageDto.Message = message;
+        messageDto.Timestamp = DateTime.UtcNow;
         Console.WriteLine( );
+        Console.WriteLine("Sending message: " + messageDto.Message);
         Console.WriteLine($"Log: {receiver} received message from {sender}: {message}");
-        await Clients.User(sender).SendAsync("ReceiveMessage", sender, message);
-        await Clients.User(receiver).SendAsync("ReceiveMessage", sender, message);
+        await Clients.User(sender).SendAsync("ReceiveMessage", sender, messageDto);
+        await Clients.User(receiver).SendAsync("ReceiveMessage", sender, messageDto);
     }
 }

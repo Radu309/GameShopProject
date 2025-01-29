@@ -6,87 +6,90 @@ using ShoppingService.Data;
 using ShoppingService.Models;
 using ShoppingService.Models.Enum;
 
-namespace ShoppingService.Controllers;
-
-[Authorize]
-[Route("chat")]
-public class ChatsController : Controller
+namespace ShoppingService.Controllers
 {
-    private readonly ShoppingDbContext _context;
-    private readonly UserManager<User> _userManager;
-
-    public ChatsController(ShoppingDbContext context, UserManager<User> userManager)
+    [Authorize]
+    [Route("chat")]
+    public class ChatsController : Controller
     {
-        _context = context;
-        _userManager = userManager;
-    }
+        private readonly ShoppingDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-    [Route("")]
-    [HttpGet]
-    public IActionResult Chat()
-    {
-        var userEmail = User.FindFirstValue(ClaimTypes.Email);
-        if (userEmail == null)
-            return Unauthorized();
-        var user = _context.Users.FirstOrDefault(u => u.Email == userEmail);
-        if (user == null)
-            return Unauthorized();
-        ViewBag.Sender = null;
-        
-        var users = _context.Users.ToList();
-        
-        if (User.IsInRole(Roles.Admin.ToString()))
+        public ChatsController(ShoppingDbContext context, UserManager<User> userManager)
         {
-            var clients = new List<User>();
-            foreach (var item in users)
-            {
-                if (_userManager.IsInRoleAsync(item, Roles.Client.ToString()).Result)
-                    clients.Add(item);
-            }
-            ViewBag.isAdmin = true;
-            return View(clients);
+            _context = context;
+            _userManager = userManager;
         }
-        else
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> ChatInit()
         {
-            var admins = new List<User>();
-            foreach (var item in users)
-            {
-                if (_userManager.IsInRoleAsync(item, Roles.Admin.ToString()).Result)
-                    admins.Add(item);
-            }
-            ViewBag.isAdmin = false;
-            return View(admins);
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (userEmail == null) return Unauthorized();
+
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null) return Unauthorized();
+
+            ViewBag.Sender = null;
+            ViewBag.Receiver = null;
+            var users = _context.Users.ToList();
+
+            var filteredUsers = await GetFilteredUsersByRole(users, User.IsInRole(Roles.Admin.ToString()));
+            ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
+            
+            return View(filteredUsers);
         }
-    }
-    [HttpGet]
-    [Route("{receiverId}")]
-    public IActionResult SelectUser(string receiverId)
-    {
-        if (string.IsNullOrEmpty(receiverId))
-            return BadRequest("User ID is required.");
 
-        var receiver = _context.Users.FirstOrDefault(u => u.Id == receiverId);
-        if (receiver == null)
-            return NotFound("User not found.");
-        
-        var senderEmail = User.FindFirstValue(ClaimTypes.Email);
-        if (senderEmail == null)
-            return Unauthorized();
-        var sender = _context.Users.FirstOrDefault(u => u.Email == senderEmail);
-        if (sender == null)
-            return Unauthorized();
-
-        // pentru demo
-        var messages = new List<object>
+        [HttpGet]
+        [Route("{receiverId}")]
+        public async Task<IActionResult> ChatOneUser(string receiverId)
         {
-            new { Text = "Hello!", Time = "10:00 AM", Sender = "other" },
-            new { Text = "Hi there!", Time = "10:05 AM", Sender = "self" }
-        };
+            if (string.IsNullOrEmpty(receiverId)) return BadRequest("User ID is required.");
 
-        ViewBag.Receiver = receiver;
-        ViewBag.Sender = sender;
-        ViewBag.Messages = messages;
-        // return View("Chat", _context.Users.ToList());
-        return PartialView("_ChatMain");
+            var receiver = await _userManager.FindByIdAsync(receiverId);
+            if (receiver == null) return NotFound("User not found.");
+
+            var senderEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (senderEmail == null) return Unauthorized();
+
+            var sender = await _userManager.FindByEmailAsync(senderEmail);
+            if (sender == null) return Unauthorized();
+
+            ViewBag.Receiver = receiver;
+            ViewBag.Sender = sender;
+            // ViewBag.Messages = GetDemoMessages();
+
+            var users = _context.Users.ToList();
+            var filteredUsers = await GetFilteredUsersByRole(users, User.IsInRole(Roles.Admin.ToString()));
+            ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
+            
+            return View(filteredUsers);
+        }
+
+        private async Task<List<User>> GetFilteredUsersByRole(List<User> users, bool isAdmin)
+        {
+            var role = isAdmin ? Roles.Client.ToString() : Roles.Admin.ToString();
+            var filteredUsers = new List<User>();
+
+            foreach (var user in users)
+            {
+                if (await _userManager.IsInRoleAsync(user, role))
+                {
+                    filteredUsers.Add(user);
+                }
+            }
+
+            return filteredUsers;
+        }
+
+        private List<object> GetDemoMessages()
+        {
+            return new List<object>
+            {
+                new { Text = "Hello!", Time = "10:00 AM", Sender = "other" },
+                new { Text = "Hi there!", Time = "10:05 AM", Sender = "self" }
+            };
+        }
     }
 }

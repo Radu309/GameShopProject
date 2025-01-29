@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ShoppingService.Models.User>
+
+@{
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="Chat">
+    <div class="chat-app">
+        <div id="chat-sidebar" class="chat-sidebar">
+            <div class="sidebar-header">
+                <h2>@ViewBag.Sender.FirstName</h2>
+            </div>
+            <ul id="userList" class="user-list">
+                @foreach (var user in Model)
+                {
+                    <li class="user active">
+                        <a asp-controller="Chats" asp-action="ChatOneUser" asp-route-receiverId="@user.Id">
+                            <span class="user-name">@user.FirstName @user.LastName</span>
+                            <span class="last-message">Last message here //TO do</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div id="chat-main" class="chat-main">
+            <div class="chat-header">
+                <h2>
+                    <span>Select a user</span>
+                </h2>
+            </div>
+            <div class="chat-messages">
+            </div>
+
+            <div class="chat-input">
+                <label for="messageToSend"></label>
+                <input id="messageToSend" type="text" placeholder="Type a message..."/>
+                <button id="sendButton" type="button">Send</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="~/css/Chats/Chat.css" asp-append-version="true"/>
