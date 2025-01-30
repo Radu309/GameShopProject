@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "ChatService";
+
+package greet;
+
+service Greeter {
+  rpc ClientServer (Request) returns (Response);
+  rpc ServerStreamToClient (Request) returns (stream Response);
+  rpc ClientStreamToServer (stream Request) returns (Response);
+  rpc BiDirectionalStreaming (stream Request) returns (stream Response);
+}
+
+message Request {
+  string sender = 1;
+  string receiver = 2;
+  string text = 3;
+}
+message Response {
+  bool success = 1;
+  string sender = 2;
+  string receiver = 3;
+  string text = 4;
+  Date timestamp = 5;
+}
+
+message Date {
+  int32 year = 1;
+  int32 month = 2;
+  int32 day = 3;
+}
+

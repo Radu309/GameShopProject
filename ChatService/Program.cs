@@ -1,24 +1,25 @@
-using ChatService.Hubs;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using ChatService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSignalR();
-
-builder.Services.AddCors(options =>
+builder.WebHost.ConfigureKestrel(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.ListenLocalhost(7225, o =>
     {
-        builder.WithOrigins("http://localhost:5173")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+        o.Protocols = HttpProtocols.Http2;
+        o.UseHttps();
     });
 });
 
+builder.Services.AddGrpc();
+
 var app = builder.Build();
 
-app.UseStaticFiles();
+app.MapGrpcService<GreeterService>();
 
-app.UseCors(); 
-app.MapHub<ChatHub>("/chatHub");
+app.MapGet("/",
+    () =>
+        "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
 app.Run();
