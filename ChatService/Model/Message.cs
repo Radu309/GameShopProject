@@ -1,11 +1,18 @@
-﻿namespace ChatService.Model;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ChatService.Model;
 
 public class Message
 {
-    public string Sender { get; set; }
-    public string Receiver { get; set; }
-    public string Text { get; set; }
-    public bool DeleteForYou { get; set; }
-    public bool DeleteForEveryone { get; set; }
-    public DateTime Timestamp { get; set; }
+    [Key]
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string Content { get; set; } = string.Empty;
+    public DateTime SentAt { get; set; } = DateTime.UtcNow;
+    public string UserId { get; set; }
+    public bool DeleteForYou { get; set; } = false;
+    public bool DeleteForEveryone { get; set; } = false;
+    public bool IsRead { get; set; } = false;
+    
+    public string ChatId { get; set; }
+    public Chat Chat { get; set; }
 }

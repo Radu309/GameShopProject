@@ -20,7 +20,7 @@ public static class AppConfiguration
     {
         services.AddScoped<GamesService>();
         services.AddSingleton<IEmailSender, EmailSender>();
-        services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
+        services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
         services.AddDbContext<ShoppingDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("ShoppingServiceContextConnection")));
 
@@ -43,6 +43,7 @@ public static class AppConfiguration
     
     private static void ConfigureIdentity(IServiceCollection services)
     {
+        
         services.AddIdentity<User, IdentityRole>
             (options =>
             {
@@ -53,6 +54,7 @@ public static class AppConfiguration
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedAccount = true;
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ShoppingDbContext>()
@@ -75,6 +77,18 @@ public static class AppConfiguration
             options.LoginPath = "/Identity/Account/Login";
             options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             options.ExpireTimeSpan = TimeSpan.FromMinutes(30); 
+            options.Events.OnRedirectToLogin = context =>
+            {
+                if (context.Request.Path.StartsWithSegments("/Identity/Account/Register"))
+                {
+                    context.Response.Redirect("/Identity/Account/RegisterConfirmation");
+                }
+                else
+                {
+                    context.Response.Redirect(context.RedirectUri);
+                }
+                return Task.CompletedTask;
+            };
         });
     }
     

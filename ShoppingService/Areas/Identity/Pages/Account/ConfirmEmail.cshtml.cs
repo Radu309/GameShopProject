@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChatService;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,7 +46,22 @@ namespace ShoppingService.Areas.Identity.Pages.Account
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            
             var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                var channel = GrpcChannel.ForAddress("https://localhost:7223");
+                var client = new Greeter.GreeterClient(channel);
+                UserIdRequest request = new UserIdRequest()
+                {
+                    Id = userId
+                };
+                var response = client.CreateUser(request);
+                if (response.Success == false)
+                {
+                    await _userManager.DeleteAsync(user);
+                }
+            }
             StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
             return Page();
         }

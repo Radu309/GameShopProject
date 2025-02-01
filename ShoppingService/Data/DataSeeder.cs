@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChatService;
+using Grpc.Net.Client;
+using Microsoft.AspNetCore.Identity;
 using ShoppingService.Models;
 using ShoppingService.Models.Enum;
 
@@ -22,23 +24,40 @@ public class DataSeeder
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
-        var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
-        if (adminUser == null)
+        var channel = GrpcChannel.ForAddress("https://localhost:7223");
+        var client = new Greeter.GreeterClient(channel);
+        for (var item = 1; item <= 5; item++)
         {
-            adminUser = new User()
+            var adminUser = await userManager.FindByEmailAsync($"admin{item}@gmail.com");
+            if (adminUser == null)
             {
-                UserName = "admin@gmail.com",
-                Email = "admin@gmail.com",
-                FirstName = "Admin",
-                LastName = "Boss",
-            };
-            var result = await userManager.CreateAsync(adminUser, "Parola123!");
-            if (result.Succeeded)
-            {
-                await userManager.AddToRoleAsync(adminUser, Roles.Admin.ToString());
-                adminUser.EmailConfirmed = true;
-                await userManager.UpdateAsync(adminUser);
+                adminUser = new User()
+                {
+                    UserName = $"admin{item}@gmail.com",
+                    Email = $"admin{item}@gmail.com",
+                    FirstName = "Admin",
+                    LastName = $"Number {item}",
+                };
+                var result = await userManager.CreateAsync(adminUser, "Parola123!");
+                if (result.Succeeded)
+                {
+                    UserIdRequest request = new UserIdRequest()
+                    {
+                        Id = adminUser.Id,
+                    };
+                    var response = client.CreateUser(request);
+                    if (response.Success == true)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, Roles.Admin.ToString());
+                        adminUser.EmailConfirmed = true;
+                        await userManager.UpdateAsync(adminUser);
+                    }
+                    else
+                        Console.WriteLine("Error creating user in chat service");
+                }
             }
         }
+
+        
     }
 }

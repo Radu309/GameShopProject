@@ -5,28 +5,46 @@ option csharp_namespace = "ChatService";
 package greet;
 
 service Greeter {
-  rpc ClientServer (Request) returns (Response);
-  rpc ServerStreamToClient (Request) returns (stream Response);
-  rpc ClientStreamToServer (stream Request) returns (Response);
-  rpc BiDirectionalStreaming (stream Request) returns (stream Response);
+  rpc CheckConnection (Check) returns (Check);
+  rpc SaveOnePrivateMessage (MessageRequest) returns (Check);
+  rpc GetChatMessages (ChatRequest) returns (stream ChatResponse);
+  rpc CreateUser (UserIdRequest) returns (Check);
+  rpc DeleteUser (UserIdRequest) returns (Check);
 }
 
-message Request {
-  string sender = 1;
-  string receiver = 2;
-  string text = 3;
-}
-message Response {
+message Check{
   bool success = 1;
-  string sender = 2;
-  string receiver = 3;
-  string text = 4;
-  Date timestamp = 5;
 }
 
-message Date {
+message MessageRequest {
+  string senderId = 1;
+  string receiverId = 2;
+  string content = 3;
+}
+
+message ChatRequest{
+  string senderId = 1;
+  string receiverId = 2;
+}
+
+message ChatResponse{
+  string content = 1; 
+  string userId = 2;
+  bool deleteForYou = 3;
+  bool deleteForEveryone = 4; 
+  bool isRead = 5;
+  SentAt SentAt = 6;
+}
+
+message UserIdRequest{
+  string id = 1;
+}
+
+message SentAt{
   int32 year = 1;
   int32 month = 2;
   int32 day = 3;
+  int32 hour = 4;
+  int32 minute = 5;
+  int32 second = 6;
 }
-

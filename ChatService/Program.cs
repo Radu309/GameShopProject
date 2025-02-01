@@ -1,16 +1,22 @@
+using ChatService.Data;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using ChatService.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(7225, o =>
+    options.ListenLocalhost(7223, o =>
     {
         o.Protocols = HttpProtocols.Http2;
         o.UseHttps();
     });
 });
+
+builder.Services.AddDbContext<ChatDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ChatServiceDbConnection")));
+
 
 builder.Services.AddGrpc();
 

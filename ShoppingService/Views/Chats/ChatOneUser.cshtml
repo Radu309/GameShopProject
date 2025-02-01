@@ -27,20 +27,28 @@
             <div class="chat-header">
                 <h2>
                     <span>@ViewBag.Receiver.Email</span>
-                    <input id="senderId" type="hidden" value="@ViewBag.Sender.Email" />
-                    <input id="receiverId" type="hidden" value="@ViewBag.Receiver.Email" />
+                    <input id="senderId" type="hidden" value="@ViewBag.Sender.Id" />
+                    <input id="receiverId" type="hidden" value="@ViewBag.Receiver.Id" />
                 </h2>
             </div>
             <div id="messagesList" class="chat-messages">
-                @* PENTRU DEMO *@
-                @* <div class="message message-received"> *@
-                @*     <p class="message-text">Hello, how are you?</p> *@
-                @*     <span class="message-time">10:30 AM</span> *@
-                @* </div> *@
-                @* <div class="message message-sent"> *@
-                @*     <p class="message-text">I'm good, thank you! And you?</p> *@
-                @*     <span class="message-time">10:31 AM</span> *@
-                @* </div> *@
+                @foreach(var item in ViewBag.Messages)
+                {
+                    @if (ViewBag.Sender.Id == item.UserId)
+                    {
+                        <div class="message message-sent">
+                            <p class="message-text">@item.Content</p>
+                            <span class="message-time">Sender</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="message message-received">
+                            <p class="message-text">@item.Content</p>
+                            <span class="message-time">Receiver</span>
+                        </div>
+                    }
+                }
             </div>
 
             <div class="chat-input">

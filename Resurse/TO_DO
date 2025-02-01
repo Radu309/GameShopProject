@@ -1,0 +1,1 @@
+﻿    -   de implementat un mecanism de roll-back pentru tansactiile dintre microservicii (SAGA pattern)

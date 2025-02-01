@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Google.Protobuf" Version="3.23.1" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
       <PackageReference Include="Grpc.Net.Client" Version="2.67.0" />
       <PackageReference Include="Grpc.Tools" Version="2.57.0">
         <PrivateAssets>all</PrivateAssets>
@@ -62,23 +63,11 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\GrpcService\GrpcService.csproj" />
+      <ProjectReference Include="..\ChatService\ChatService.csproj" />
     </ItemGroup>
 
-<!--    <ItemGroup>-->
-<!--      <ProjectReference Include="..\GrpcService\GrpcService.csproj" />-->
-<!--    </ItemGroup>-->
 
-<!--    <ItemGroup>-->
-<!--      <Protobuf Include="Protos\greet.proto">-->
-<!--        <GrpcServices>Server</GrpcServices>-->
-<!--        <Access>Public</Access>-->
-<!--        <ProtoCompile>True</ProtoCompile>-->
-<!--        <CompileOutputs>True</CompileOutputs>-->
-<!--        <OutputDir>obj\Debug\net8.0\</OutputDir>-->
-<!--        <Generator>MSBuild:Compile</Generator>-->
-<!--      </Protobuf>-->
-<!--    </ItemGroup>-->
+
 
 
 </Project>

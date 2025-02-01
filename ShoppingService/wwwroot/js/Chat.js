@@ -20,15 +20,12 @@ connection.start()
         console.error("Connection error:", err.toString());
     });
 
-connection.on("ReceiveMessage", (sender, messageDto) => {
-    console.log("Current Sender: ", senderId.value);
-    console.log("Current Receiver: ", receiverId.value);
-    console.log("Received message:", messageDto);
-    if(messageDto.sender === senderId.value || messageDto.sender === receiverId.value) 
-        appendMessageToList(sender, messageDto);
+connection.on("ReceiveMessage", (messageDto) => {
+    if(messageDto.senderId === senderId.value || messageDto.senderId === receiverId.value) 
+        appendMessageToList(messageDto);
 });
 
-sendButton.addEventListener("click", event => {
+sendButton.addEventListener("click", async event => {
     event.preventDefault();
 
     const sender = senderId.value;
@@ -36,14 +33,31 @@ sendButton.addEventListener("click", event => {
     const message = messageToSend.value;
 
     if (receiver !== "" && message !== "" && sender !== "") {
-        connection.invoke("SendMessageToOne", sender, receiver, message)
-            .catch(err => {
-                console.error("Error sending private message:", err.toString());
+        const requestData = { SenderId: sender, ReceiverId: receiver, Content: message };
+        try {
+            const response = await fetch("https://localhost:7078/api/grpc/send-message", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
             });
+
+            if (!response.ok) {
+                console.error("Error sending message:", response.status, response.statusText);
+                return;
+            }
+            const text = await response.text();
+            const data = text ? JSON.parse(text) : {};
+            connection.invoke("SendMessageToOne", sender, receiver, message)
+                .catch(err => console.error("Error notifying chat:", err.toString()));
+        } catch (err) {
+            console.error("Error sending private message:", err.toString());
+        }
     }
 });
 
-const encodeMessage = (user, message) => {
+const encodeMessage = (message) => {
     const safeMessage = message
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -51,13 +65,13 @@ const encodeMessage = (user, message) => {
     return `${safeMessage}`;
 };
 
-const appendMessageToList = (user, messageDto) => {
-    const encodedMsg = encodeMessage(user, messageDto.message);
+const appendMessageToList = (messageDto) => {
+    const encodedMsg = encodeMessage(messageDto.message);
     const messageDate = new Date(messageDto.timestamp); 
     const formattedTime = messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     const messageDiv = document.createElement("div");
-    if (messageDto.sender === senderId.value) {
+    if (messageDto.senderId === senderId.value) {
         messageDiv.classList.add("message", "message-sent");
     } else {
         messageDiv.classList.add("message", "message-received");

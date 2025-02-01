@@ -1,9 +1,14 @@
 ﻿using System.Security.Claims;
+using ChatService;
+using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShoppingService.Data;
 using ShoppingService.Models;
+using ShoppingService.Models.Dto;
 using ShoppingService.Models.Enum;
 
 namespace ShoppingService.Controllers
@@ -39,6 +44,16 @@ namespace ShoppingService.Controllers
             var filteredUsers = await GetFilteredUsersByRole();
             ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
             
+            // Check connection
+            // TO DO: Sa se conecteze aici si sa ramana conectat si cand schimba pagina
+            var channel = GrpcChannel.ForAddress("https://localhost:7223");
+            var client = new Greeter.GreeterClient(channel);
+            var check = new Check
+            {
+                Success = true
+            };
+            var response = await client.CheckConnectionAsync(check);
+            
             return View(filteredUsers);
         }
 
@@ -69,11 +84,21 @@ namespace ShoppingService.Controllers
             
             ViewBag.Receiver = receiver;
             ViewBag.Sender = sender;
-            // ViewBag.Messages = GetDemoMessages();
+            
+            var channel = GrpcChannel.ForAddress("https://localhost:7223");
+            var client = new Greeter.GreeterClient(channel);
+            var request = new ChatRequest() { SenderId = sender.Id, ReceiverId = receiver.Id };
+            using var call = client.GetChatMessages(request);
+            List<ChatResponse> messages = new List<ChatResponse>();
+
+            await foreach (var message in call.ResponseStream.ReadAllAsync())
+            {
+                messages.Add(message);
+            }
+            ViewBag.Messages = messages;
+            ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
 
             var filteredUsers = await GetFilteredUsersByRole();
-            ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
-            
             return View(filteredUsers);
         }
 
