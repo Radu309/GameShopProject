@@ -11,10 +11,12 @@ namespace ShoppingService.Controllers;
 public class GrpcController : ControllerBase
 {
     private readonly GrpcChannel channel;
+    private readonly GrpcChannel _grpcChannel;
 
-    public GrpcController()
+
+    public GrpcController(GrpcChannel grpcChannel)
     {
-        channel = GrpcChannel.ForAddress("https://localhost:7223");
+        _grpcChannel = grpcChannel ?? throw new ArgumentNullException(nameof(grpcChannel));
     }
     
     [HttpPost]
@@ -23,7 +25,7 @@ public class GrpcController : ControllerBase
     {
         try
         {
-            var client = new Greeter.GreeterClient(channel);
+            var client = new Greeter.GreeterClient(_grpcChannel);
             var response = await client.SaveOnePrivateMessageAsync(request);
             if (!response.Success)
                 return BadRequest("Can't send message");

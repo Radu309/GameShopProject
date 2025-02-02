@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using ChatService;
+using Grpc.Net.Client;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -21,6 +23,7 @@ public static class AppConfiguration
         services.AddScoped<GamesService>();
         services.AddSingleton<IEmailSender, EmailSender>();
         services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
+        services.AddSingleton(GrpcChannel.ForAddress("https://localhost:7223"));
         services.AddDbContext<ShoppingDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("ShoppingServiceContextConnection")));
 

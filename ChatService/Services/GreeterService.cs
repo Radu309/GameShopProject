@@ -53,7 +53,12 @@ public class GreeterService : Greeter.GreeterBase
             _logger.LogInformation("Created new chat between {SenderId} and {ReceiverId}", sender.Id, receiver.Id);
         }
 
-        var message = new Message {UserId = sender.Id, Content = request.Content, Chat = chat, ChatId = chat.Id};
+        var message = new Message
+        {
+            UserId = sender.Id, 
+            Content = request.Content, 
+            Chat = chat, ChatId = chat.Id,
+        };
 
         chat.Messages.Add(message);
         _context.Messages.Add(message);

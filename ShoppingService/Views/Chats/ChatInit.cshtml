@@ -14,7 +14,7 @@
             <ul id="userList" class="user-list">
                 @foreach (var user in Model)
                 {
-                    <li class="user active">
+                    <li class="user">
                         <a asp-controller="Chats" asp-action="ChatOneUser" asp-route-receiverId="@user.Id">
                             <span class="user-name">@user.FirstName @user.LastName</span>
                             <span class="last-message">Last message here //TO do</span>

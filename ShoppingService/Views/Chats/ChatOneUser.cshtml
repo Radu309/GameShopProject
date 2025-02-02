@@ -3,56 +3,47 @@
 @{
     ViewBag.Title = "Chat";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var sender = ViewBag.Sender;
+    var receiver = ViewBag.Receiver;
 }
 
 <section id="Chat">
     <div class="chat-app">
         <div id="chat-sidebar" class="chat-sidebar">
             <div class="sidebar-header">
-                <h2>@ViewBag.Sender.FirstName</h2>
+                <h2>@sender.FirstName</h2>
             </div>
             <ul id="userList" class="user-list">
                 @foreach (var user in Model)
                 {
-                    <li class="user active">
-                        <a asp-controller="Chats" asp-action="ChatOneUser" asp-route-receiverId="@user.Id">
+                    <a asp-controller="Chats" asp-action="ChatOneUser" asp-route-receiverId="@user.Id">
+                        <li class="user @(user.Id == receiver.Id ? "active" : "")">
                             <span class="user-name">@user.FirstName @user.LastName</span>
                             <span class="last-message">Last message here //TO do</span>
-                        </a>
-                    </li>
+                        </li>
+                    </a>
                 }
             </ul>
         </div>
         <div id="chat-main" class="chat-main">
             <div class="chat-header">
                 <h2>
-                    <span>@ViewBag.Receiver.Email</span>
-                    <input id="senderId" type="hidden" value="@ViewBag.Sender.Id" />
-                    <input id="receiverId" type="hidden" value="@ViewBag.Receiver.Id" />
+                    <span>@receiver.Email</span>
+                    <input id="senderId" type="hidden" value="@sender.Id" />
+                    <input id="receiverId" type="hidden" value="@receiver.Id" />
                 </h2>
             </div>
             <div id="messagesList" class="chat-messages">
                 @foreach(var item in ViewBag.Messages)
                 {
-                    @if (ViewBag.Sender.Id == item.UserId)
-                    {
-                        <div class="message message-sent">
-                            <p class="message-text">@item.Content</p>
-                            <span class="message-time">Sender</span>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="message message-received">
-                            <p class="message-text">@item.Content</p>
-                            <span class="message-time">Receiver</span>
-                        </div>
-                    }
+                    <div class="message @(sender.Id == item.UserId ? "message-sent" : "message-received")">
+                        <p class="message-text">@item.Content</p>
+                        <span class="message-time">@item.SentAt.Hour:@item.SentAt.Minute</span>
+                    </div>
                 }
             </div>
 
             <div class="chat-input">
-                <label for="messageToSend"></label>
                 <input id="messageToSend" type="text" placeholder="Type a message..."/>
                 <button id="sendButton" type="button">Send</button>
             </div>

@@ -19,11 +19,15 @@ namespace ShoppingService.Controllers
     {
         private readonly ShoppingDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly GrpcChannel _grpcChannel;
 
-        public ChatsController(ShoppingDbContext context, UserManager<User> userManager)
+        public ChatsController(ShoppingDbContext context, 
+            UserManager<User> userManager,
+            GrpcChannel grpcChannel)
         {
             _context = context;
             _userManager = userManager;
+            _grpcChannel = grpcChannel ?? throw new ArgumentNullException(nameof(grpcChannel));
         }
 
         [HttpGet]
@@ -43,16 +47,6 @@ namespace ShoppingService.Controllers
 
             var filteredUsers = await GetFilteredUsersByRole();
             ViewBag.isAdmin = User.IsInRole(Roles.Admin.ToString());
-            
-            // Check connection
-            // TO DO: Sa se conecteze aici si sa ramana conectat si cand schimba pagina
-            var channel = GrpcChannel.ForAddress("https://localhost:7223");
-            var client = new Greeter.GreeterClient(channel);
-            var check = new Check
-            {
-                Success = true
-            };
-            var response = await client.CheckConnectionAsync(check);
             
             return View(filteredUsers);
         }
@@ -85,9 +79,8 @@ namespace ShoppingService.Controllers
             ViewBag.Receiver = receiver;
             ViewBag.Sender = sender;
             
-            var channel = GrpcChannel.ForAddress("https://localhost:7223");
-            var client = new Greeter.GreeterClient(channel);
             var request = new ChatRequest() { SenderId = sender.Id, ReceiverId = receiver.Id };
+            var client = new Greeter.GreeterClient(_grpcChannel);
             using var call = client.GetChatMessages(request);
             List<ChatResponse> messages = new List<ChatResponse>();
 
@@ -121,7 +114,7 @@ namespace ShoppingService.Controllers
             var rolesUser1 = await _userManager.GetRolesAsync(user1);
             var rolesUser2 = await _userManager.GetRolesAsync(user2);
 
-            return rolesUser1.Intersect(rolesUser2).Any(); // Verifică dacă există cel puțin un rol comun
+            return rolesUser1.Intersect(rolesUser2).Any(); 
         }
 
         
